@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_clean"
+            android:icon="@android:drawable/ic_menu_delete"
+            android:title="清理" />
+        <item
+            android:id="@+id/nav_advanced"
+            android:icon="@android:drawable/ic_menu_agenda"
+            android:title="高级选项" />
+    </group>
+
+    <item android:title="Setting">
+        <menu>
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@android:drawable/ic_menu_help"
+                android:title="关于" />
+        </menu>
+    </item>
+
+</menu>

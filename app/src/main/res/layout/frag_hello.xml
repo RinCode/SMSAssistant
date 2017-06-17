@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/hello"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="使用须知：\n
+ • 本软件的正常工作需要授予短信读/写权限，并会申请临时变更此软件为默认短信应用。\n
+ • 基础清理功能为清理短信中含有“验证码”字符串的短信，由于匹配机制的问题，不保证能全部筛选出来。\n
+ • 高级清理功能中，您可以自己书写Java正则表达式进行匹配筛选。\n
+ • 重要：在进行任何删除操作前，请保证您已进行过原短信的备份。对于误删重要信息造成的后果请自负。
+" />
+</LinearLayout>
