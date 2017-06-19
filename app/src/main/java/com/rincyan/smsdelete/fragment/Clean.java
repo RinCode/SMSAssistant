@@ -12,9 +12,11 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rincyan.smsdelete.R;
@@ -66,9 +68,18 @@ public class Clean extends Fragment {
             @Override
             public void onItemClick(View view, final int position) {
                 if (!checkEmpty()) {
-                    new AlertDialog.Builder(context).setTitle("确认手动删除？")
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    LayoutInflater inflater = getActivity().getLayoutInflater();
+                    View layout = inflater.inflate(R.layout.detail_dialog_layout, null);
+                    TextView detail_num = layout.findViewById(R.id.detail_num);
+                    TextView detail_date = layout.findViewById(R.id.detail_date);
+                    TextView detail_body = layout.findViewById(R.id.detail_body);
+                    detail_num.setText(smsData.get(position).getNum());
+                    detail_date.setText(smsData.get(position).getDate());
+                    detail_body.setText(smsData.get(position).getBody());
+                    detail_body.setMovementMethod(ScrollingMovementMethod.getInstance());
+                    new AlertDialog.Builder(context).setTitle("详细信息")
+                            .setView(layout)
+                            .setPositiveButton("删除", new DialogInterface.OnClickListener() {
 
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -80,6 +91,13 @@ public class Clean extends Fragment {
                                         Toast.makeText(context, "请设置为默认短信应用后重新尝试", Toast.LENGTH_SHORT).show();
                                         defaultSMS.SetDefault();
                                     }
+                                }
+                            })
+                            .setNeutralButton("移出删除列表", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    smsData.remove(position);
+                                    adapter.notifyDataSetChanged();
                                 }
                             })
                             .setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -178,6 +196,6 @@ public class Clean extends Fragment {
     }
 
     private boolean checkEmpty() {
-        return (smsData.size() == 1 & smsData.get(0).getId() == -1);
+        return smsData.size() == 0 || smsData.size() == 1 & smsData.get(0).getId() == -1;
     }
 }

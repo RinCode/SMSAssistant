@@ -6,6 +6,7 @@
 
     <string name="action_settings">关于</string>
 
-    <string name="version">验证码删除器v2.0</string>
+    <string name="version">验证码删除器v2.2</string>
+    <string name="simple_version">v2.2</string>
     <string name="about_other">注意：我们强烈建议您在删除数据之前使用其他软件进行备份，或者过目一遍即将删除的内容（如果内容较少的话）。误删造成的损失请自负。</string>
 </resources>
