@@ -1,6 +1,7 @@
 package com.rincyan.smsdelete;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.rincyan.smsdelete.fragment.About;
@@ -68,7 +70,17 @@ public class MainActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                View view = getFocus();
+                if (view != null) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+                super.onDrawerOpened(drawerView);
+            }
+        };
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
@@ -95,7 +107,7 @@ public class MainActivity extends AppCompatActivity
             }
             if (fragmentManager.getBackStackEntryCount() == 1) {
                 DefaultSMS defaultSMS = new DefaultSMS(this);
-                if(defaultSMS.isDefault()){
+                if (defaultSMS.isDefault()) {
                     defaultSMS.CancelDefault();
                 }
                 System.out.println(defaultSMS.isDefault());
@@ -175,6 +187,10 @@ public class MainActivity extends AppCompatActivity
                 Toast.makeText(this, "无法获取短信权限", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private View getFocus() {
+        return this.getCurrentFocus();
     }
 
 
