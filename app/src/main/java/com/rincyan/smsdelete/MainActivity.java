@@ -2,6 +2,8 @@ package com.rincyan.smsdelete;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -157,6 +160,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_about) {
             about = new About();
             title = "关于";
+            fab.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
             fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.content, about).commit();
         }
@@ -186,6 +190,32 @@ public class MainActivity extends AppCompatActivity
             if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, "无法获取短信权限", Toast.LENGTH_SHORT).show();
             }
+        }
+        SharedPreferences preferences = this.getSharedPreferences("tos", MODE_PRIVATE);
+        Boolean accept = preferences.getBoolean("accept", false);
+        if (!accept) {
+            new AlertDialog.Builder(this).setTitle("使用协议及说明")
+                    .setMessage(" • 本软件的正常工作需要授予短信读/写权限，并会申请临时变更此软件为默认短信应用。\n" +
+                            " • 基础清理功能为清理短信中含有“验证码”字符串的短信，由于匹配机制的问题，不保证能全部筛选出来。\n" +
+                            " • 高级清理功能中，您可以自己书写Java正则表达式进行匹配筛选。\n" +
+                            " • 重要：在进行任何删除操作前，请保证您已进行过原短信的备份。对于误删重要信息造成的后果请自负。")
+                    .setCancelable(false)
+                    .setPositiveButton("接受", new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            SharedPreferences.Editor editor = getSharedPreferences("tos", MODE_PRIVATE).edit();
+                            editor.putBoolean("accept", true);
+                            editor.apply();
+                        }
+                    })
+                    .setNegativeButton("拒绝", new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            onDestroy();
+                        }
+                    }).show();
         }
     }
 
