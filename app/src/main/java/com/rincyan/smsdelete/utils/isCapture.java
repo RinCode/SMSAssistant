@@ -46,4 +46,14 @@ public class isCapture {
         }
         return false;
     }
+
+    public boolean timeDetect(long s, long e, long now) {
+        return now >= s && now <= e;
+    }
+
+    public boolean contactDetect(String address,String regex){
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(address);
+        return m.find();
+    }
 }

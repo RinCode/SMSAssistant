@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rincyan.smsdelete.R;
+import com.rincyan.smsdelete.utils.FragmentControl;
 
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -33,6 +34,7 @@ public class Addrule extends Fragment {
     private EditText text;
     private TextView result;
     private SQLiteDatabase db;
+    private FragmentControl fragmentControl;
 
     @Nullable
     @Override
@@ -44,6 +46,9 @@ public class Addrule extends Fragment {
         result = view.findViewById(R.id.result);
         db = getActivity().openOrCreateDatabase("smsdel.db", getActivity().MODE_PRIVATE, null);
         getActivity().setTitle("添加规则");
+        fragmentControl = (FragmentControl) getActivity().getApplicationContext();
+        fragmentControl.setFabIconSava();
+        fragmentControl.set_fragment_name("添加规则");
         return view;
     }
 

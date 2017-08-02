@@ -1,5 +1,6 @@
 package com.rincyan.smsdelete.fragment;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,7 +12,6 @@ import com.rincyan.smsdelete.R;
 
 /**
  * Created by rin on 2017/6/17.
- *
  */
 
 public class Hello extends Fragment {

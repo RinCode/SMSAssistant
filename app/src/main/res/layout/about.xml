@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center">
+    android:padding="20dp">
 
     <ImageView
         android:id="@+id/logo"
@@ -10,7 +10,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:contentDescription="logo"
-        android:layout_centerHorizontal="true" />
+        />
 
     <TextView
         android:id="@+id/version"
@@ -19,6 +19,25 @@
         android:layout_below="@id/logo"
         android:text="@string/version"
         android:layout_width="match_parent"
-        android:gravity="center"
         android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/writer"
+        android:paddingTop="20dp"
+        android:textSize="20sp"
+        android:layout_below="@id/version"
+        android:text="作者："
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/github"
+        android:paddingTop="10dp"
+        android:textSize="20sp"
+        android:layout_below="@id/writer"
+        android:text="https://github.com/RinCode"
+        android:autoLink="web"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 </RelativeLayout>

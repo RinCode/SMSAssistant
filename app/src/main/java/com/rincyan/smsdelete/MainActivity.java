@@ -12,6 +12,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -27,9 +28,11 @@ import android.widget.Toast;
 import com.rincyan.smsdelete.fragment.About;
 import com.rincyan.smsdelete.fragment.Addrule;
 import com.rincyan.smsdelete.fragment.Advance;
+import com.rincyan.smsdelete.fragment.Advance_regex;
 import com.rincyan.smsdelete.fragment.Clean;
 import com.rincyan.smsdelete.fragment.Hello;
 import com.rincyan.smsdelete.utils.DefaultSMS;
+import com.rincyan.smsdelete.utils.FragmentControl;
 
 import java.util.Objects;
 
@@ -42,7 +45,7 @@ public class MainActivity extends AppCompatActivity
     private About about;
     private FragmentManager fragmentManager;
     private FloatingActionButton fab;
-    private String title;
+    private FragmentControl fragmentControl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,21 +54,19 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         fragmentManager = getSupportFragmentManager();
-        title = getTitle().toString();
-
+        fragmentControl = (FragmentControl) this.getApplicationContext();
         fab = (FloatingActionButton) findViewById(R.id.fab);
+        fragmentControl.setFab(fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Objects.equals(title, "清理")) {
+                if (Objects.equals(fragmentControl.get_fragment_name(), "清理")) {
+                    clean = (Clean) fragmentControl.getFragment();
                     clean.deleteAll();
-                } else if (Objects.equals(title, "高级选项")) {
+                } else if (Objects.equals(fragmentControl.get_fragment_name(), "正则表达式模式")) {
                     addrule = new Addrule();
-                    System.out.println("1");
-                    title = "添加规则";
                     fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.content, addrule).commit();
-                    fab.setImageResource(android.R.drawable.ic_menu_save);
-                } else if (Objects.equals(title, "添加规则")) {
+                } else if (Objects.equals(fragmentControl.get_fragment_name(), "添加规则")) {
                     addrule.save();
                 }
             }
@@ -101,19 +102,16 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            if (Objects.equals(title, "添加规则")) {
-                fab.setImageResource(android.R.drawable.ic_menu_add);
-                title = "高级选项";
-            } else if (Objects.equals(title, "添加规则")) {
-                fab.setImageResource(android.R.drawable.ic_menu_add);
-                title = "添加规则";
+            if (Objects.equals(fragmentControl.get_fragment_name(), "正则表达式模式")) {
+                fragmentControl.set_fragment_name("高级选项");
+            } else if (Objects.equals(fragmentControl.get_fragment_name(), "添加规则")) {
+                fragmentControl.set_fragment_name("正则表达式模式");
             }
             if (fragmentManager.getBackStackEntryCount() == 1) {
                 DefaultSMS defaultSMS = new DefaultSMS(this);
                 if (defaultSMS.isDefault()) {
                     defaultSMS.CancelDefault();
                 }
-                System.out.println(defaultSMS.isDefault());
                 finish();
             }
             super.onBackPressed();
@@ -147,20 +145,15 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_clean) {
             clean = new Clean();
-            title = "清理";
+            fragmentControl.setFragment(clean);
             fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.content, clean).commit();
-            fab.setImageResource(android.R.drawable.ic_menu_delete);
         } else if (id == R.id.nav_advanced) {
             advance = new Advance();
-            title = "高级选项";
             fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.content, advance).commit();
-            fab.setImageResource(android.R.drawable.ic_menu_add);
         } else if (id == R.id.nav_about) {
             about = new About();
-            title = "关于";
-            fab.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
             fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.content, about).commit();
         }
@@ -179,17 +172,6 @@ public class MainActivity extends AppCompatActivity
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_SMS)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_SMS}, 0);
-        }
-
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 0) {
-            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "无法获取短信权限", Toast.LENGTH_SHORT).show();
-            }
         }
         SharedPreferences preferences = this.getSharedPreferences("tos", MODE_PRIVATE);
         Boolean accept = preferences.getBoolean("accept", false);
@@ -213,9 +195,19 @@ public class MainActivity extends AppCompatActivity
 
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            onDestroy();
+                            System.exit(0);
                         }
                     }).show();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 0) {
+            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "无法获取短信权限", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

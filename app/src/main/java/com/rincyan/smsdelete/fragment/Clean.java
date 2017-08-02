@@ -13,9 +13,11 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,11 +25,13 @@ import com.rincyan.smsdelete.R;
 import com.rincyan.smsdelete.recyclerview.RecyclerViewAdapter;
 import com.rincyan.smsdelete.recyclerview.SMS;
 import com.rincyan.smsdelete.utils.DefaultSMS;
+import com.rincyan.smsdelete.utils.FragmentControl;
 import com.rincyan.smsdelete.utils.SMSHandler;
 import com.rincyan.smsdelete.utils.isCapture;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by rin on 2017/6/16.
@@ -43,6 +47,12 @@ public class Clean extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private SMSHandler smsHandler;
     private DefaultSMS defaultSMS;
+    private String method = "null";
+    private Long start_time = null;
+    private Long end_time = null;
+    private String regex = "";
+    private Bundle arg;
+    private FragmentControl fragmentControl;
 
     @Nullable
     @Override
@@ -57,7 +67,22 @@ public class Clean extends Fragment {
         smsList.setLayoutManager(new LinearLayoutManager(context));
         smsHandler = new SMSHandler(context);
         defaultSMS = new DefaultSMS(context);
+        try {
+            arg = getArguments();
+            method = arg.getString("method");
+            if (Objects.equals(method, "time")) {
+                start_time = arg.getLong("start_time");
+                end_time = arg.getLong("end_time");
+            }else if(Objects.equals(method, "contact")){
+                regex = arg.getString("regex");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         getActivity().setTitle("清理");
+        fragmentControl = (FragmentControl) getActivity().getApplicationContext();
+        fragmentControl.setFabIconDel();
+        fragmentControl.set_fragment_name("清理");
         return view;
     }
 
@@ -119,12 +144,14 @@ public class Clean extends Fragment {
             }
         });
         Update update = new Update();
+        swipeRefreshLayout.setRefreshing(true);
         update.execute();
     }
 
     public void deleteAll() {
         if (!checkEmpty()) {
-            new AlertDialog.Builder(context).setTitle("警告本操作将删除表内全部内容，确认删除？")
+            new AlertDialog.Builder(context).setTitle("警告")
+                    .setMessage("本操作将删除表内全部内容，共"+smsData.size()+"项，确认删除？")
                     .setIcon(android.R.drawable.ic_dialog_info)
                     .setPositiveButton("确定", new DialogInterface.OnClickListener() {
 
@@ -182,7 +209,12 @@ public class Clean extends Fragment {
         @Override
         protected Object doInBackground(Object[] objects) {
             SMSHandler smsHandler = new SMSHandler(context);
-            return smsHandler.getSMS();
+            if (Objects.equals(method, "time")) {
+                smsHandler.setTime(start_time, end_time);
+            }if(Objects.equals(method,"contact")){
+                smsHandler.setRegex(regex);
+            }
+            return smsHandler.getSMS(method);
 
         }
 

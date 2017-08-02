@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp">
+
+    <TextView
+        android:text="注意：此模式下的查找为单次生效，不会影响到正则模式的开关。"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"/>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dip"
+        android:background="#FF909090" />
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        >
+        <TableRow android:paddingBottom="10dp">
+            <TextView
+                android:text="按联系人查找"/>
+        </TableRow>
+        <TableRow android:paddingBottom="10dp">
+            <EditText
+                android:id="@+id/contact_rule"
+                android:hint="在此输入联系人正则表达式" />
+        </TableRow>
+        <TableRow>
+            <Button
+                android:id="@+id/contact_search"
+                android:text="按此规则查找"
+                android:layout_width="wrap_content"/>
+        </TableRow>
+    </TableLayout>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dip"
+        android:background="#FF909090" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        >
+        <TableRow android:paddingBottom="10dp">
+            <TextView
+                android:text="按时间段查找"/>
+        </TableRow>
+        <TableRow android:paddingBottom="10dp">
+            <TextView
+                android:id="@+id/start_time_lab"
+                android:textSize="20dp"
+                android:text="开始时间："
+                />
+            <TextView
+                android:id="@+id/start_time"
+                android:textSize="20dp"
+                android:text="点击选择"
+                />
+        </TableRow>
+        <TableRow android:paddingBottom="10dp">
+            <TextView
+                android:id="@+id/end_time_lab"
+                android:textSize="20dp"
+                android:text="结束时间："
+                />
+            <TextView
+                android:id="@+id/end_time"
+                android:textSize="20dp"
+                android:text="点击选择"
+                />
+        </TableRow>
+        <TableRow>
+            <Button
+                android:id="@+id/time_search"
+                android:text="在此时间段内查找"
+                android:layout_width="wrap_content"/>
+        </TableRow>
+    </TableLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dip"
+        android:background="#FF909090" />
+</LinearLayout>

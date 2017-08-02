@@ -25,6 +25,9 @@ import java.util.Objects;
  */
 
 public class SMSHandler {
+    private long start_time;
+    private long end_time;
+    private String regex;
     private Context context;
     private SharedPreferences preferences;
     private ProgressDialog progressDialog;
@@ -37,7 +40,7 @@ public class SMSHandler {
         this.context = context;
     }
 
-    public ArrayList getSMS() {
+    public ArrayList getSMS(String method) {
         final ArrayList smsData = new ArrayList<>();
         try {
             ContentResolver resolver = context.getContentResolver();
@@ -55,15 +58,25 @@ public class SMSHandler {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd hh:mm");
                 Date formatDate = new Date(Long.parseLong(cursor.getString(indexDate)));
                 String date = dateFormat.format(formatDate);
-                preferences = context.getSharedPreferences("setting", context.MODE_PRIVATE);
-                Boolean checked = preferences.getBoolean("advance", false);
-                if (!checked) {
-                    if (ic.simpleDetect(body)) {
+                if (Objects.equals(method, "time")) {
+                    if (ic.timeDetect(start_time, end_time, Long.parseLong(cursor.getString(indexDate)))) {
+                        smsData.add(new SMS(address, body, date, id));
+                    }
+                } else if (Objects.equals(method, "contact")) {
+                    if(ic.contactDetect(address,regex)){
                         smsData.add(new SMS(address, body, date, id));
                     }
                 } else {
-                    if (ic.advanceDetect(body)) {
-                        smsData.add(new SMS(address, body, date, id));
+                    preferences = context.getSharedPreferences("setting", context.MODE_PRIVATE);
+                    Boolean checked = preferences.getBoolean("advance", false);
+                    if (!checked) {
+                        if (ic.simpleDetect(body)) {
+                            smsData.add(new SMS(address, body, date, id));
+                        }
+                    } else {
+                        if (ic.advanceDetect(body)) {
+                            smsData.add(new SMS(address, body, date, id));
+                        }
                     }
                 }
             }
@@ -85,5 +98,14 @@ public class SMSHandler {
         String uri = "content://sms/" + smsId;
         return context.getContentResolver().delete(Uri.parse(uri),
                 null, null);
+    }
+
+    public void setTime(long l1, long l2) {
+        this.start_time = l1;
+        this.end_time = l2;
+    }
+
+    public void setRegex(String regex){
+        this.regex = regex;
     }
 }
