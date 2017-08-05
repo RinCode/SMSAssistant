@@ -73,16 +73,16 @@ public class Clean extends Fragment {
             if (Objects.equals(method, "time")) {
                 start_time = arg.getLong("start_time");
                 end_time = arg.getLong("end_time");
-            }else if(Objects.equals(method, "contact")){
+            } else if (Objects.equals(method, "contact")) {
                 regex = arg.getString("regex");
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        getActivity().setTitle("清理");
+        getActivity().setTitle(R.string.fragment_clean);
         fragmentControl = (FragmentControl) getActivity().getApplicationContext();
         fragmentControl.setFabIconDel();
-        fragmentControl.set_fragment_name("清理");
+        fragmentControl.set_fragment_name(getResources().getString(R.string.fragment_clean));
         return view;
     }
 
@@ -102,37 +102,37 @@ public class Clean extends Fragment {
                     detail_date.setText(smsData.get(position).getDate());
                     detail_body.setText(smsData.get(position).getBody());
                     detail_body.setMovementMethod(ScrollingMovementMethod.getInstance());
-                    new AlertDialog.Builder(context).setTitle("详细信息")
+                    new AlertDialog.Builder(context).setTitle(R.string.smslist_detail)
                             .setView(layout)
-                            .setPositiveButton("删除", new DialogInterface.OnClickListener() {
+                            .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
 
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     if (smsHandler.deleteSms(smsData.get(position).getId().toString()) == 1) {
                                         smsData.remove(position);
                                         adapter.notifyDataSetChanged();
-                                        Toast.makeText(context, "删除成功", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(context, R.string.delete_success, Toast.LENGTH_SHORT).show();
                                     } else {
-                                        Toast.makeText(context, "请设置为默认短信应用后重新尝试", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(context, R.string.no_sms_try_again, Toast.LENGTH_SHORT).show();
                                         defaultSMS.SetDefault();
                                     }
                                 }
                             })
-                            .setNeutralButton("移出删除列表", new DialogInterface.OnClickListener() {
+                            .setNeutralButton(R.string.remove_from_delete, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     smsData.remove(position);
                                     adapter.notifyDataSetChanged();
                                 }
                             })
-                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
 
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                 }
                             }).show();
                 } else {
-                    Toast.makeText(context, "没有数据可以删除", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.no_data_del, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -150,16 +150,16 @@ public class Clean extends Fragment {
 
     public void deleteAll() {
         if (!checkEmpty()) {
-            new AlertDialog.Builder(context).setTitle("警告")
-                    .setMessage("本操作将删除表内全部内容，共"+smsData.size()+"项，确认删除？")
+            new AlertDialog.Builder(context).setTitle(R.string.warning)
+                    .setMessage(getResources().getString(R.string.fragment_clean_willdel1) + " " + smsData.size() + " " + getResources().getString(R.string.fragment_clean_willdel2))
                     .setIcon(android.R.drawable.ic_dialog_info)
-                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    .setPositiveButton(R.string.sure, new DialogInterface.OnClickListener() {
 
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             progressDialog = new ProgressDialog(context);
                             progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                            progressDialog.setTitle("正在删除");
+                            progressDialog.setTitle(R.string.deleting);
                             progressDialog.setMax(100);
                             progressDialog.setProgress(0);
                             progressDialog.setCancelable(false);
@@ -175,7 +175,7 @@ public class Clean extends Fragment {
                                         flag = smsHandler.deleteSms(tmp.getId().toString());
                                         if (flag != 1) {
                                             progressDialog.dismiss();
-                                            Toast.makeText(context, "删除失败，请设置为默认短信应用后重试", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(context, R.string.fragment_clean_error, Toast.LENGTH_SHORT).show();
                                             defaultSMS.SetDefault();
                                             Looper.loop();
                                             return;
@@ -184,7 +184,7 @@ public class Clean extends Fragment {
                                         progressDialog.setProgress((int) ((float) count / (float) smsData.size() * 100));
                                     }
                                     progressDialog.dismiss();
-                                    Toast.makeText(context, "删除成功，退出应用前请恢复默认短信应用", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(context, R.string.fragment_clean_success, Toast.LENGTH_SHORT).show();
                                     defaultSMS.CancelDefault();
                                     Update update = new Update();
                                     update.execute();
@@ -193,14 +193,14 @@ public class Clean extends Fragment {
                             }.start();
                         }
                     })
-                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
 
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                         }
                     }).show();
         } else {
-            Toast.makeText(context, "没有数据可以删除", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.no_data_del, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -211,7 +211,8 @@ public class Clean extends Fragment {
             SMSHandler smsHandler = new SMSHandler(context);
             if (Objects.equals(method, "time")) {
                 smsHandler.setTime(start_time, end_time);
-            }if(Objects.equals(method,"contact")){
+            }
+            if (Objects.equals(method, "contact")) {
                 smsHandler.setRegex(regex);
             }
             return smsHandler.getSMS(method);

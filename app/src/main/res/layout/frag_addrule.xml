@@ -8,7 +8,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="规则项:" />
+        android:text="@string/addrule_rule" />
 
     <EditText
         android:id="@+id/rule"
@@ -18,7 +18,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="测试文本:" />
+        android:text="@string/addrule_test_text" />
 
     <EditText
         android:id="@+id/test_text"
@@ -34,12 +34,12 @@
             android:id="@+id/testBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="测试" />
+            android:text="@string/addrule_test_btn" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/result"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="此处显示测试结果" />
+        android:text="@string/addrule_test_result" />
 </LinearLayout>

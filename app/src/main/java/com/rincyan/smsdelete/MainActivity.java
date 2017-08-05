@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,6 +14,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -34,6 +37,7 @@ import com.rincyan.smsdelete.fragment.Hello;
 import com.rincyan.smsdelete.utils.DefaultSMS;
 import com.rincyan.smsdelete.utils.FragmentControl;
 
+import java.util.Locale;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity
@@ -51,6 +55,13 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Resources resources = getResources();
+        DisplayMetrics dm = resources.getDisplayMetrics();
+        Configuration config = resources.getConfiguration();
+        config.locale = Locale.getDefault();
+        resources.updateConfiguration(config, dm);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         fragmentManager = getSupportFragmentManager();
@@ -60,13 +71,13 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Objects.equals(fragmentControl.get_fragment_name(), "清理")) {
+                if (Objects.equals(fragmentControl.get_fragment_name(), getResources().getString(R.string.fragment_clean))) {
                     clean = (Clean) fragmentControl.getFragment();
                     clean.deleteAll();
-                } else if (Objects.equals(fragmentControl.get_fragment_name(), "正则表达式模式")) {
+                } else if (Objects.equals(fragmentControl.get_fragment_name(), getResources().getString(R.string.fragment_regex_mode))) {
                     addrule = new Addrule();
                     fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.content, addrule).commit();
-                } else if (Objects.equals(fragmentControl.get_fragment_name(), "添加规则")) {
+                } else if (Objects.equals(fragmentControl.get_fragment_name(), getResources().getString(R.string.fragment_addrule))) {
                     addrule.save();
                 }
             }
@@ -102,10 +113,10 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            if (Objects.equals(fragmentControl.get_fragment_name(), "正则表达式模式")) {
-                fragmentControl.set_fragment_name("高级选项");
-            } else if (Objects.equals(fragmentControl.get_fragment_name(), "添加规则")) {
-                fragmentControl.set_fragment_name("正则表达式模式");
+            if (Objects.equals(fragmentControl.get_fragment_name(), getResources().getString(R.string.fragment_regex_mode))) {
+                fragmentControl.set_fragment_name(getResources().getString(R.string.fragment_advance));
+            } else if (Objects.equals(fragmentControl.get_fragment_name(), getResources().getString(R.string.addrule_rule))) {
+                fragmentControl.set_fragment_name(getResources().getString(R.string.fragment_regex_mode));
             }
             if (fragmentManager.getBackStackEntryCount() == 1) {
                 DefaultSMS defaultSMS = new DefaultSMS(this);
@@ -176,13 +187,10 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences preferences = this.getSharedPreferences("tos", MODE_PRIVATE);
         Boolean accept = preferences.getBoolean("accept", false);
         if (!accept) {
-            new AlertDialog.Builder(this).setTitle("使用协议及说明")
-                    .setMessage(" • 本软件的正常工作需要授予短信读/写权限，并会申请临时变更此软件为默认短信应用。\n" +
-                            " • 基础清理功能为清理短信中含有“验证码”字符串的短信，由于匹配机制的问题，不保证能全部筛选出来。\n" +
-                            " • 高级清理功能中，您可以自己书写Java正则表达式进行匹配筛选。\n" +
-                            " • 重要：在进行任何删除操作前，请保证您已进行过原短信的备份。对于误删重要信息造成的后果请自负。")
+            new AlertDialog.Builder(this).setTitle(R.string.tos)
+                    .setMessage(R.string.usage)
                     .setCancelable(false)
-                    .setPositiveButton("接受", new DialogInterface.OnClickListener() {
+                    .setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
 
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -191,7 +199,7 @@ public class MainActivity extends AppCompatActivity
                             editor.apply();
                         }
                     })
-                    .setNegativeButton("拒绝", new DialogInterface.OnClickListener() {
+                    .setNegativeButton(R.string.refuse, new DialogInterface.OnClickListener() {
 
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -206,7 +214,7 @@ public class MainActivity extends AppCompatActivity
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 0) {
             if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "无法获取短信权限", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.no_sms_permission, Toast.LENGTH_SHORT).show();
             }
         }
     }

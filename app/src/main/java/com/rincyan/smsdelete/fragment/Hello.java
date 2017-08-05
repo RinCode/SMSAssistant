@@ -19,7 +19,7 @@ public class Hello extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.frag_hello, container, false);
-        getActivity().setTitle("验证码删除器");
+        getActivity().setTitle(R.string.app_name);
         return view;
     }
 }

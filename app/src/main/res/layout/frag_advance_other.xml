@@ -5,7 +5,7 @@
     android:padding="20dp">
 
     <TextView
-        android:text="注意：此模式下的查找为单次生效，不会影响到正则模式的开关。"
+        android:text="@string/advance_other_attention"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="10dp"/>
@@ -21,17 +21,17 @@
         >
         <TableRow android:paddingBottom="10dp">
             <TextView
-                android:text="按联系人查找"/>
+                android:text="@string/advance_other_search_by_contact"/>
         </TableRow>
         <TableRow android:paddingBottom="10dp">
             <EditText
                 android:id="@+id/contact_rule"
-                android:hint="在此输入联系人正则表达式" />
+                android:hint="@string/advance_other_search_by_contact_regex" />
         </TableRow>
         <TableRow>
             <Button
                 android:id="@+id/contact_search"
-                android:text="按此规则查找"
+                android:text="@string/advance_other_search_by_contact_btn"
                 android:layout_width="wrap_content"/>
         </TableRow>
     </TableLayout>
@@ -48,36 +48,36 @@
         >
         <TableRow android:paddingBottom="10dp">
             <TextView
-                android:text="按时间段查找"/>
+                android:text="@string/advance_other_search_by_time"/>
         </TableRow>
         <TableRow android:paddingBottom="10dp">
             <TextView
                 android:id="@+id/start_time_lab"
-                android:textSize="20dp"
-                android:text="开始时间："
+                android:textSize="20sp"
+                android:text="@string/advance_other_search_by_time_start"
                 />
             <TextView
                 android:id="@+id/start_time"
-                android:textSize="20dp"
-                android:text="点击选择"
+                android:textSize="20sp"
+                android:text="@string/advance_other_search_by_time_start_pick"
                 />
         </TableRow>
         <TableRow android:paddingBottom="10dp">
             <TextView
                 android:id="@+id/end_time_lab"
-                android:textSize="20dp"
-                android:text="结束时间："
+                android:textSize="20sp"
+                android:text="@string/advance_other_search_by_time_end"
                 />
             <TextView
                 android:id="@+id/end_time"
-                android:textSize="20dp"
-                android:text="点击选择"
+                android:textSize="20sp"
+                android:text="@string/advance_other_search_by_time_end_pick"
                 />
         </TableRow>
         <TableRow>
             <Button
                 android:id="@+id/time_search"
-                android:text="在此时间段内查找"
+                android:text="@string/advance_other_search_by_time_btn"
                 android:layout_width="wrap_content"/>
         </TableRow>
     </TableLayout>

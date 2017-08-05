@@ -1,0 +1,104 @@
+<resources>
+
+    <!--ui-->
+
+    <string name="app_name">驗證碼刪除器</string>
+    <string name="simple_version">v2.4.1</string>
+
+    <string name="usage">
+        • 本軟件的正常工作需要授予短信讀/寫權限，並會申請臨時變更此軟件為默認短信應用。\n
+         • 基礎清理功能為清理短信中含有“驗證碼”字符串的短信，由於匹配機制的問題，不保證能全部篩選出來。\n
+         • 高級清理功能中，您可以自己書寫Java正則表達式進行匹配篩選。或者按聯繫人或時間進行篩選。\n
+         • 重要：在進行任何刪除操作前，請保證您已進行過原短信的備份。對於誤刪重要信息造成的後果請自負。
+    </string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="nav_other">其他</string>
+    <string name="action_settings">關於</string>
+
+
+    <string name="smslist_detail">詳細信息</string>
+    <string name="smslist_from">發件人:</string>
+    <string name="smslist_date">日期:</string>
+    <string name="smslist_content">內容:</string>
+
+    <string name="detail_dialog_from">發件人:</string>
+    <string name="detail_dialog_date">日期:</string>
+    <string name="detail_dialog_content">內容:</string>
+
+
+    <string name="addrule_rule">規則項:</string>
+    <string name="addrule_test_text">測試文本:</string>
+    <string name="addrule_test_btn">測試</string>
+    <string name="addrule_test_result">此處顯示測試結果</string>
+
+    <string name="advance_other_attention">註意：此模式下的查找為單次生效，不會影響到正則模式的開關。</string>
+    <string name="advance_other_search_by_contact">按聯系人查找</string>
+    <string name="advance_other_search_by_contact_regex">在此輸入聯系人正則表達式</string>
+    <string name="advance_other_search_by_contact_btn">按此規則查找</string>
+    <string name="advance_other_search_by_time">按時間段查找</string>
+    <string name="advance_other_search_by_time_start">開始時間：</string>
+    <string name="advance_other_search_by_time_start_pick">點擊選擇</string>
+    <string name="advance_other_search_by_time_end">結束時間：</string>
+    <string name="advance_other_search_by_time_end_pick">點擊選擇</string>
+    <string name="advance_other_search_by_time_btn">在此時間段內查找</string>
+
+    <string name="advance_regex_switch">開啟高級規則匹配</string>
+    <string name="advance_regex_attention">提示：請盡量縮小正則表達式匹配範圍，以免誤刪。</string>
+    <string name="advance_regex_rules">當前規則：</string>
+
+    <string name="about_writer">作者：</string>
+    <string name="about_github">https://github.com/RinCode</string>
+    <string name="about_version">驗證碼刪除器v2.4.1</string>
+    <string name="about_translate_by">由谷歌提供翻譯支持。</string>
+
+    <!--end_ui-->
+
+    <string name="fragment_clean">清理</string>
+    <string name="fragment_clean_willdel1">本操作將刪除表內全部內容，共</string>
+    <string name="fragment_clean_willdel2">項，確認刪除？</string>
+    <string name="fragment_clean_error">刪除失敗，請設置為默認短信應用後重試</string>
+    <string name="fragment_clean_success">刪除成功，退出應用前請恢復默認短信應用</string>
+
+
+    <string name="fragment_advance">高級選項</string>
+
+    <string name="fragment_regex_mode">正則表達式模式</string>
+    <string name="fragment_regex_no_exist_regex">沒有規則，請點擊右下角添加</string>
+    <string name="fragment_regex_no_regex">請輸入正則表達式</string>
+    <string name="fragment_regex_error_regex">"正則表達式可能語法錯誤"</string>
+    <string name="fragment_regex_find_result">匹配到結果：</string>
+    <string name="fragment_regex_no_match">無匹配</string>
+    <string name="fragment_regex_save_successful">無匹配</string>
+    <string name="fragment_regex_save_failed">無匹配</string>
+
+    <string name="fragment_other_mode">其他模式</string>
+    <string name="fragment_addrule">添加規則</string>
+    <string name="fragment_other_time_timeerr">時間不正確</string>
+    <string name="fragment_other_time_crash">"未設置時間或不正確"</string>
+
+
+    <string name="fragment_about">關於</string>
+
+    <!--toast-->
+    <string name="warning">警告</string>
+    <string name="accept">接受</string>
+    <string name="refuse">拒絕</string>
+    <string name="delete">刪除</string>
+    <string name="deleting">正在刪除</string>
+    <string name="remove_from_delete">移出刪除列表</string>
+    <string name="sure">確定</string>
+    <string name="sure_delete">確認刪除？</string>
+    <string name="cancel">取消</string>
+    <string name="delete_err">刪除失敗</string>
+    <string name="delete_success">刪除成功</string>
+    <string name="no_data_del">"沒有數據可以刪除"</string>
+
+    <string name="tos">使用協議及說明</string>
+    <string name="no_sms_permission">無法獲取短信權限</string>
+    <string name="no_sms_try_again">請設置為默認短信應用後重新嘗試</string>
+    <string name="no_sms_detected">未檢測到數據，請嘗試下拉刷新</string>
+    <!--end_toast-->
+</resources>

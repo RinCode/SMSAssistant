@@ -13,7 +13,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="开启高级规则匹配" />
+            android:text="@string/advance_regex_switch" />
 
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/switch_button"
@@ -24,11 +24,11 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="提示：请尽量缩小正则表达式匹配范围，以免误删。"/>
+        android:text="@string/advance_regex_attention"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="当前规则：" />
+        android:text="@string/advance_regex_rules" />
 
     <ListView
         android:id="@+id/advance_regex_list"

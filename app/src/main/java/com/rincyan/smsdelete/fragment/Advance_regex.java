@@ -43,10 +43,10 @@ public class Advance_regex extends Fragment {
         View view = inflater.inflate(R.layout.frag_advance_regex, container, false);
         listView = view.findViewById(R.id.advance_regex_list);
         switchBtn = view.findViewById(R.id.switch_button);
-        getActivity().setTitle("正则表达式模式");
+        getActivity().setTitle(R.string.fragment_regex_mode);
         fragmentControl = (FragmentControl)getActivity().getApplicationContext();
         fragmentControl.setFabIconAdd();
-        fragmentControl.set_fragment_name("正则表达式模式");
+        fragmentControl.set_fragment_name(getResources().getString(R.string.fragment_regex_mode));
         return view;
     }
 
@@ -74,9 +74,9 @@ public class Advance_regex extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, final int i, final long l) {
-                new AlertDialog.Builder(getActivity()).setTitle("确认删除？")
+                new AlertDialog.Builder(getActivity()).setTitle(R.string.sure_delete)
                         .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        .setPositiveButton(R.string.sure, new DialogInterface.OnClickListener() {
 
                             @Override
                             public void onClick(DialogInterface dialogInterface, int ix) {
@@ -85,11 +85,11 @@ public class Advance_regex extends Fragment {
                                     getRegexData();
                                     adapter.notifyDataSetChanged();
                                 } catch (Exception e) {
-                                    Toast.makeText(getActivity(), "删除失败", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), R.string.delete_err, Toast.LENGTH_SHORT).show();
                                 }
                             }
                         })
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
 
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -110,7 +110,7 @@ public class Advance_regex extends Fragment {
             c.close();
         }
         if (regexData.isEmpty()) {
-            Toast.makeText(getActivity(), "没有规则，请点击右下角添加", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.fragment_regex_no_exist_regex, Toast.LENGTH_SHORT).show();
         }
         return regexData;
     }

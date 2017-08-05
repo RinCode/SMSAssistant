@@ -13,6 +13,7 @@ import android.provider.Settings;
 import android.provider.Telephony;
 import android.widget.Toast;
 
+import com.rincyan.smsdelete.R;
 import com.rincyan.smsdelete.recyclerview.SMS;
 
 import java.text.SimpleDateFormat;
@@ -81,12 +82,12 @@ public class SMSHandler {
                 }
             }
             if (smsData.isEmpty()) {
-                smsData.add(new SMS("未检测到数据，请尝试下拉刷新", "", "", (long) -1));
+                smsData.add(new SMS(context.getResources().getString(R.string.no_sms_detected), "", "", (long) -1));
             }
             cursor.close();
 
         } catch (Exception e) {
-            smsData.add(new SMS("未得到短信读取权限", "", "", (long) -1));
+            smsData.add(new SMS(context.getResources().getString(R.string.no_sms_permission), "", "", (long) -1));
         }
         return smsData;
     }

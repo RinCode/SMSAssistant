@@ -1,43 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:padding="20dp">
 
     <ImageView
         android:id="@+id/logo"
-        android:src="@mipmap/ic_launcher"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:contentDescription="logo"
-        />
+        android:src="@mipmap/ic_launcher" />
+    <!--android:contentDescription="logo"-->
+
 
     <TextView
         android:id="@+id/version"
-        android:paddingTop="10dp"
-        android:textSize="20sp"
-        android:layout_below="@id/logo"
-        android:text="@string/version"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@id/logo"
+        android:paddingTop="10dp"
+        android:text="@string/about_version"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/writer"
-        android:paddingTop="20dp"
-        android:textSize="20sp"
-        android:layout_below="@id/version"
-        android:text="作者："
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@id/version"
+        android:paddingTop="20dp"
+        android:text="@string/about_writer"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/github"
-        android:paddingTop="10dp"
-        android:textSize="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/writer"
-        android:text="https://github.com/RinCode"
         android:autoLink="web"
+        android:paddingTop="10dp"
+        android:text="@string/about_github"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/translate_by"
+        android:layout_below="@id/github"
+        android:paddingTop="10dp"
+        android:text="@string/about_translate_by"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
 </RelativeLayout>

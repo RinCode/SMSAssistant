@@ -36,10 +36,10 @@ public class Advance extends Fragment {
         View view = inflater.inflate(R.layout.frag_advance, container, false);
         advance_method = view.findViewById(R.id.advancedmethod);
         fragmentManager = getActivity().getSupportFragmentManager();
-        getActivity().setTitle("高级选项");
+        getActivity().setTitle(getResources().getString(R.string.fragment_advance));
         fragmentControl = (FragmentControl) getActivity().getApplicationContext();
         fragmentControl.setFabIconCancle();
-        fragmentControl.set_fragment_name("高级选项");
+        fragmentControl.set_fragment_name(getResources().getString(R.string.fragment_advance));
         return view;
     }
 
@@ -55,13 +55,13 @@ public class Advance extends Fragment {
                 switch (i){
                     case 0:
                         advance_regex = new Advance_regex();
-                        fragmentControl.set_fragment_name("正则表达式模式");
+                        fragmentControl.set_fragment_name(getResources().getString(R.string.fragment_regex_mode));
                         fragmentControl.setFragment(advance_regex);
                         fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.content, advance_regex).commit();
                         break;
                     default:
                         advance_other = new Advance_other();
-                        fragmentControl.set_fragment_name("其他模式");
+                        fragmentControl.set_fragment_name(getResources().getString(R.string.fragment_other_mode));
                         fragmentControl.setFragment(advance_other);
                         fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.content, advance_other).commit();
                         break;
@@ -73,8 +73,8 @@ public class Advance extends Fragment {
     
     private ArrayList<String> getMethod(){
         methodData.clear();
-        methodData.add("正则表达式模式");
-        methodData.add("其他模式");
+        methodData.add(getResources().getString(R.string.fragment_regex_mode));
+        methodData.add(getResources().getString(R.string.fragment_other_mode));
         return methodData;
     }
 }

@@ -21,10 +21,10 @@ public class About extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.about, container, false);
-        getActivity().setTitle("关于");
+        getActivity().setTitle(R.string.fragment_about);
         fragmentControl = (FragmentControl) getActivity().getApplicationContext();
         fragmentControl.setFabIconCancle();
-        fragmentControl.set_fragment_name("关于");
+        fragmentControl.set_fragment_name(getResources().getString(R.string.fragment_about));
         return view;
     }
 }

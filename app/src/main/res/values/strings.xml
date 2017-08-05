@@ -1,13 +1,104 @@
 <resources>
-    <string name="app_name">验证码删除器</string>
+
+    <!--ui-->
+
+    <string name="app_name">Text Message Deleter</string>
+    <string name="simple_version">v2.4.1</string>
+
+    <string name="usage">
+        • This app needs SMS Write/Read Permission to work, and will change your default sms app temporarily.\n
+         • The basic function is to filter text messages. But this is mainly for the Chinese text messages, so you need to add RegEx rules in the Advanced Function.\n
+         • In the Advanced Function, you can write your own Java RegEx to match messages. Or search by contacts or time.\n
+         • IMPORTANT: Before making any deletions, make sure you have made a backup of your original message. For the consequences of accidental deletion of important information at your own risk.
+    </string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_settings">关于</string>
+    <string name="nav_other">Other</string>
+    <string name="action_settings">About</string>
 
-    <string name="version">验证码删除器v2.4</string>
-    <string name="simple_version">v2.4</string>
-    <string name="about_other">注意：我们强烈建议您在删除数据之前使用其他软件进行备份，或者过目一遍即将删除的内容（如果内容较少的话）。误删造成的损失请自负。</string>
-    <string name="hack">反编译的大佬你好呀</string>
+
+    <string name="smslist_detail">Detail:</string>
+    <string name="smslist_from">From:</string>
+    <string name="smslist_date">Date:</string>
+    <string name="smslist_content">Content:</string>
+
+    <string name="detail_dialog_from">From:</string>
+    <string name="detail_dialog_date">Date:</string>
+    <string name="detail_dialog_content">Content:</string>
+
+
+    <string name="addrule_rule">Rules:</string>
+    <string name="addrule_test_text">Test text:</string>
+    <string name="addrule_test_btn">Test it</string>
+    <string name="addrule_test_result">Test results</string>
+
+    <string name="advance_other_attention">Note: The lookup in this mode is valid for a single time and does not affect the RegEx Mode\'s switch.</string>
+    <string name="advance_other_search_by_contact">Search by contacts</string>
+    <string name="advance_other_search_by_contact_regex">RegEx here</string>
+    <string name="advance_other_search_by_contact_btn">Search</string>
+    <string name="advance_other_search_by_time">Search by time</string>
+    <string name="advance_other_search_by_time_start">Start time：</string>
+    <string name="advance_other_search_by_time_start_pick">click to pick</string>
+    <string name="advance_other_search_by_time_end">End time：</string>
+    <string name="advance_other_search_by_time_end_pick">click to pick</string>
+    <string name="advance_other_search_by_time_btn">Search</string>
+
+    <string name="advance_regex_switch">Turn on RegEx Mode</string>
+    <string name="advance_regex_attention">Tip: Please try to narrow the RegEx match range, so as not to accidentally deleted.</string>
+    <string name="advance_regex_rules">Current rules:</string>
+
+    <string name="about_writer">Writer:</string>
+    <string name="about_github">https://github.com/RinCode</string>
+    <string name="about_version">Text Message Deleter v2.4.1</string>
+    <string name="about_translate_by">Translated By Google.</string>
+
+    <!--end_ui-->
+
+    <string name="fragment_clean">Clean</string>
+    <string name="fragment_clean_willdel1">This will delete all the contents of the list, a total of</string>
+    <string name="fragment_clean_willdel2">items. Sure?</string>
+    <string name="fragment_clean_error">Delete failed, please set the default SMS application after retry.</string>
+    <string name="fragment_clean_success">Delete the success, exit the application before you restore the default SMS application.</string>
+
+
+    <string name="fragment_advance">Advanced</string>
+
+    <string name="fragment_regex_mode">RegEx Mode</string>
+    <string name="fragment_regex_no_exist_regex">There are no rules, please click the lower right button to add.</string>
+    <string name="fragment_regex_no_regex">Please enter a RegEx</string>
+    <string name="fragment_regex_error_regex">RegEx may be syntactically wrong</string>
+    <string name="fragment_regex_find_result">Matched result:</string>
+    <string name="fragment_regex_no_match">No match</string>
+    <string name="fragment_regex_save_successful">Matched</string>
+    <string name="fragment_regex_save_failed">No match</string>
+
+    <string name="fragment_other_mode">Other Mode</string>
+    <string name="fragment_addrule">Add rule</string>
+    <string name="fragment_other_time_timeerr">Time error</string>
+    <string name="fragment_other_time_crash">Time error or not set</string>
+
+
+    <string name="fragment_about">About</string>
+
+
+    <string name="warning">Warning</string>
+    <string name="accept">Accpet</string>
+    <string name="refuse">Refuse</string>
+    <string name="delete">Delete</string>
+    <string name="deleting">Deleting</string>
+    <string name="remove_from_delete">Remove from list</string>
+    <string name="sure">OK</string>
+    <string name="sure_delete">Sure？</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete_err">Failed</string>
+    <string name="delete_success">Succeed</string>
+    <string name="no_data_del">No data to delete</string>
+
+    <string name="tos">Attention</string>
+    <string name="no_sms_permission">NO SMS </string>
+    <string name="no_sms_try_again">Please set as the default SMS application and try again</string>
+    <string name="no_sms_detected">No data detected, please drop down to refresh.</string>
+
 </resources>

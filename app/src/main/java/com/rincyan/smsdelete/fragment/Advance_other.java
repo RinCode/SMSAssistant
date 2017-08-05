@@ -44,7 +44,7 @@ public class Advance_other extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.frag_advance_other, container, false);
-        getActivity().setTitle("其他模式");
+        getActivity().setTitle(R.string.fragment_other_mode);
         start_time = view.findViewById(R.id.start_time);
         end_time = view.findViewById(R.id.end_time);
         time_search = view.findViewById(R.id.time_search);
@@ -53,7 +53,7 @@ public class Advance_other extends Fragment {
         fragmentManager = getActivity().getSupportFragmentManager();
         fragmentControl = (FragmentControl) getActivity().getApplicationContext();
         fragmentControl.setFabIconCancle();
-        fragmentControl.set_fragment_name("其他模式");
+        fragmentControl.set_fragment_name(getResources().getString(R.string.fragment_other_mode));
         return view;
     }
 
@@ -105,10 +105,10 @@ public class Advance_other extends Fragment {
                         fragmentControl.setFragment(clean);
                         fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.content, clean).commit();
                     } else {
-                        Toast.makeText(getActivity(), "时间不正确", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), R.string.fragment_other_time_timeerr, Toast.LENGTH_SHORT).show();
                     }
                 } catch (ParseException e) {
-                    Toast.makeText(getActivity(), "未设置时间或不正确", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), R.string.fragment_other_time_crash, Toast.LENGTH_SHORT).show();
                 }
             }
         });

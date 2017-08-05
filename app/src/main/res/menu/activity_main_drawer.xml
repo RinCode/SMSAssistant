@@ -5,19 +5,19 @@
         <item
             android:id="@+id/nav_clean"
             android:icon="@android:drawable/ic_menu_delete"
-            android:title="清理" />
+            android:title="@string/fragment_clean" />
         <item
             android:id="@+id/nav_advanced"
             android:icon="@android:drawable/ic_menu_agenda"
-            android:title="高级选项" />
+            android:title="@string/fragment_advance" />
     </group>
 
-    <item android:title="其他">
+    <item android:title="@string/nav_other">
         <menu>
             <item
                 android:id="@+id/nav_about"
                 android:icon="@android:drawable/ic_menu_help"
-                android:title="关于" />
+                android:title="@string/fragment_about" />
         </menu>
     </item>
 

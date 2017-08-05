@@ -23,7 +23,7 @@
                 android:id="@+id/smsnumber_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="发件人："/>
+                android:text="@string/smslist_from"/>
             <TextView
                 android:id="@+id/smsnumber"
                 android:layout_toEndOf="@id/smsnumber_label"
@@ -36,7 +36,7 @@
                 android:layout_below="@id/smsnumber_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="日期："/>
+                android:text="@string/smslist_date"/>
             <TextView
                 android:id="@+id/smsdate"
                 android:layout_width="wrap_content"
@@ -50,7 +50,7 @@
                 android:layout_below="@id/smsdate_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="内容："/>
+                android:text="@string/smslist_content"/>
             <TextView
                 android:id="@+id/smsbody"
                 android:layout_width="match_parent"

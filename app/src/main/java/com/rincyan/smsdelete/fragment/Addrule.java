@@ -45,10 +45,10 @@ public class Addrule extends Fragment {
         text = view.findViewById(R.id.test_text);
         result = view.findViewById(R.id.result);
         db = getActivity().openOrCreateDatabase("smsdel.db", getActivity().MODE_PRIVATE, null);
-        getActivity().setTitle("添加规则");
+        getActivity().setTitle(R.string.fragment_addrule);
         fragmentControl = (FragmentControl) getActivity().getApplicationContext();
         fragmentControl.setFabIconSava();
-        fragmentControl.set_fragment_name("添加规则");
+        fragmentControl.set_fragment_name(getResources().getString(R.string.fragment_addrule));
         return view;
     }
 
@@ -72,28 +72,28 @@ public class Addrule extends Fragment {
         String result = "";
         try {
             if (rule.getText().toString().isEmpty()) {
-                return "请输入正则表达式";
+                return getResources().getString(R.string.fragment_regex_no_regex);
             } else {
                 Pattern p = Pattern.compile(rule.getText().toString());
                 Matcher m = p.matcher(text.getText().toString());
                 while (m.find()) {
-                    result += "匹配到结果：" + m.group() + "\n";
+                    result += getResources().getString(R.string.fragment_regex_find_result) + m.group() + "\n";
                 }
                 if (!Objects.equals(result, "")) {
                     return result;
                 } else {
-                    return "无匹配";
+                    return getResources().getString(R.string.fragment_regex_no_match);
                 }
             }
         } catch (Exception e) {
-            return "正则表达式可能语法错误";
+            return getResources().getString(R.string.fragment_regex_error_regex);
         }
     }
 
     public void save() {
         String srule = rule.getText().toString();
         if (srule.isEmpty()) {
-            result.setText("请输入正则表达式");
+            result.setText(R.string.fragment_regex_no_regex);
         }else {
             try {
                 Pattern p = Pattern.compile(rule.getText().toString());
@@ -101,12 +101,12 @@ public class Addrule extends Fragment {
                 m.find();
                 try {
                     db.execSQL("insert into regex(rule) values('" + rule.getText().toString() + "')");
-                    Toast.makeText(getActivity(),"保存成功",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(),R.string.fragment_regex_save_successful,Toast.LENGTH_SHORT).show();
                 }catch (Exception e){
-                    Toast.makeText(getActivity(),"保存失败",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(),R.string.fragment_regex_save_failed,Toast.LENGTH_SHORT).show();
                 }
             }catch (Exception e){
-                result.setText("正则表达式不正确");
+                result.setText(R.string.fragment_regex_error_regex);
             }
         }
     }
