@@ -48,6 +48,7 @@ public class SMSHandler {
             final Cursor cursor = resolver.query(SMS_URI, ALL_THREADS_PROJECTION,
                     null, null, "date desc");
             isCapture ic = new isCapture(context);
+            assert cursor != null;
             while ((cursor.moveToNext())) {
                 int indexBody = cursor.getColumnIndex("body");
                 int indexAddress = cursor.getColumnIndex("address");

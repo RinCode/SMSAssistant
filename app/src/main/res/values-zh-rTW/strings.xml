@@ -3,7 +3,7 @@
     <!--ui-->
 
     <string name="app_name">驗證碼刪除器</string>
-    <string name="simple_version">v2.4.1</string>
+    <string name="simple_version">v2.4.2</string>
 
     <string name="usage">
         • 本軟件的正常工作需要授予短信讀/寫權限，並會申請臨時變更此軟件為默認短信應用。\n
@@ -71,8 +71,8 @@
     <string name="fragment_regex_error_regex">"正則表達式可能語法錯誤"</string>
     <string name="fragment_regex_find_result">匹配到結果：</string>
     <string name="fragment_regex_no_match">無匹配</string>
-    <string name="fragment_regex_save_successful">無匹配</string>
-    <string name="fragment_regex_save_failed">無匹配</string>
+    <string name="fragment_regex_save_successful">保存成功</string>
+    <string name="fragment_regex_save_failed">保存失敗</string>
 
     <string name="fragment_other_mode">其他模式</string>
     <string name="fragment_addrule">添加規則</string>

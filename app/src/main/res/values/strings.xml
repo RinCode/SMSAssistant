@@ -3,7 +3,7 @@
     <!--ui-->
 
     <string name="app_name">Text Message Deleter</string>
-    <string name="simple_version">v2.4.1</string>
+    <string name="simple_version">v2.4.2</string>
 
     <string name="usage">
         • This app needs SMS Write/Read Permission to work, and will change your default sms app temporarily.\n
@@ -71,8 +71,8 @@
     <string name="fragment_regex_error_regex">RegEx may be syntactically wrong</string>
     <string name="fragment_regex_find_result">Matched result:</string>
     <string name="fragment_regex_no_match">No match</string>
-    <string name="fragment_regex_save_successful">Matched</string>
-    <string name="fragment_regex_save_failed">No match</string>
+    <string name="fragment_regex_save_successful">Saved</string>
+    <string name="fragment_regex_save_failed">Save failed</string>
 
     <string name="fragment_other_mode">Other Mode</string>
     <string name="fragment_addrule">Add rule</string>
