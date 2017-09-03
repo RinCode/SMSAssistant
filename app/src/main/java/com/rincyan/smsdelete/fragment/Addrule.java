@@ -26,13 +26,15 @@ import java.util.regex.Pattern;
 
 /**
  * Created by rin on 2017/6/17.
+ * “添加规则”页面
+ * 用于添加正则表达式规则
  */
 
 public class Addrule extends Fragment {
-    private Button testBtn;
-    private EditText rule;
-    private EditText text;
-    private TextView result;
+    private Button testBtn;//测试正则表达式的按钮
+    private EditText rule;//规则
+    private EditText text;//待匹配内容
+    private TextView result;//匹配结果
     private SQLiteDatabase db;
     private FragmentControl fragmentControl;
 
@@ -66,6 +68,7 @@ public class Addrule extends Fragment {
     private String check() {
         View view = getActivity().getCurrentFocus();
         if (view != null) {
+            //收回键盘
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }

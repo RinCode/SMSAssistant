@@ -25,12 +25,13 @@ import java.util.ArrayList;
 
 /**
  * Created by rin on 2017/6/16.
- *
+ *“高级设置-正则表达式模式”
+ * 用于短信内容的正则表达式筛选
  */
 
 public class Advance_regex extends Fragment {
-    private ListView listView;
-    private SwitchCompat switchBtn;
+    private ListView listView;//正则匹配项
+    private SwitchCompat switchBtn;//模式开关
     private ArrayAdapter<String> adapter;
     private ArrayList<String> regexData;
     private SharedPreferences preferences;
@@ -60,6 +61,7 @@ public class Advance_regex extends Fragment {
         switchBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                //在preference中记录开关状态
                 if (b) {
                     SharedPreferences.Editor editor = getActivity().getSharedPreferences("setting", getActivity().MODE_PRIVATE).edit();
                     editor.putBoolean("advance", true);
@@ -74,6 +76,7 @@ public class Advance_regex extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, final int i, final long l) {
+                //删除匹配项
                 new AlertDialog.Builder(getActivity()).setTitle(R.string.sure_delete)
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setPositiveButton(R.string.sure, new DialogInterface.OnClickListener() {
@@ -101,6 +104,7 @@ public class Advance_regex extends Fragment {
     }
 
     public ArrayList<String> getRegexData() {
+        //读取数据库中的匹配项
         regexData.clear();
         Cursor c = db.rawQuery("select * from regex", null);
         if (c != null) {
@@ -116,6 +120,7 @@ public class Advance_regex extends Fragment {
     }
 
     private void setSwitch() {
+        //设置开关状态
         preferences = getActivity().getSharedPreferences("setting", getActivity().MODE_PRIVATE);
         Boolean checked = preferences.getBoolean("advance", false);
         if (checked) {

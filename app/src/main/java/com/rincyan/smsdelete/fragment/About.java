@@ -12,6 +12,7 @@ import com.rincyan.smsdelete.utils.FragmentControl;
 
 /**
  * Created by rin on 2017/6/16.
+ * “关于”页面
  *
  */
 

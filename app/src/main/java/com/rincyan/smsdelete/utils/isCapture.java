@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 
 /**
  * Created by rin on 2017/6/15.
+ * 验证码过滤
  */
 
 public class isCapture {

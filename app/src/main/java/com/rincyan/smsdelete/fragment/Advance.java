@@ -18,15 +18,17 @@ import java.util.ArrayList;
 
 /**
  * Created by rin on 2017/08/01.
+ *“高级设置”页面
+ * 用于选取匹配模式
  *
  */
 
 public class Advance extends Fragment {
-    private ListView advance_method;
+    private ListView advance_method;//匹配模式列表
     private ArrayAdapter<String> adapter;
     private ArrayList<String> methodData;
-    private Advance_regex advance_regex;
-    private Advance_other advance_other;
+    private Advance_regex advance_regex;//正则表达式模式
+    private Advance_other advance_other;//其他模式
     private FragmentManager fragmentManager;
     private FragmentControl fragmentControl;
 

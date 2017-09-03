@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //悬浮按钮动作
                 if (Objects.equals(fragmentControl.get_fragment_name(), getResources().getString(R.string.fragment_clean))) {
                     clean = (Clean) fragmentControl.getFragment();
                     clean.deleteAll();
@@ -119,6 +120,7 @@ public class MainActivity extends AppCompatActivity
                 fragmentControl.set_fragment_name(getResources().getString(R.string.fragment_regex_mode));
             }
             if (fragmentManager.getBackStackEntryCount() == 1) {
+                //退出前检查是否已还原默认短信应用
                 DefaultSMS defaultSMS = new DefaultSMS(this);
                 if (defaultSMS.isDefault()) {
                     defaultSMS.CancelDefault();

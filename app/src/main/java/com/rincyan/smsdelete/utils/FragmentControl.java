@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 
 /**
  * Created by rin on 2017/08/01.
+ * 用于判断当前展示的fragment是哪个
  */
 
 public class FragmentControl extends Application {

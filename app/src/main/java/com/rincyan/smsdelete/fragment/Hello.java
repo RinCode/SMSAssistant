@@ -12,6 +12,7 @@ import com.rincyan.smsdelete.R;
 
 /**
  * Created by rin on 2017/6/17.
+ * “初始界面”
  */
 
 public class Hello extends Fragment {

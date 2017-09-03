@@ -9,6 +9,7 @@ import java.util.Objects;
 
 /**
  * Created by rin on 2017/6/16.
+ * 用于设置及取消默认短信应用
  */
 
 public class DefaultSMS {

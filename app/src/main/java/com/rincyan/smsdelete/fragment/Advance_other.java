@@ -28,14 +28,16 @@ import java.util.regex.Pattern;
 
 /**
  * Created by rin on 2017/08/01.
+ * “高级设置-其他模式”
+ * 用于用户以时间段对短信进行筛选
  */
 
 public class Advance_other extends Fragment {
     private TextView start_time;
     private TextView end_time;
-    private Button time_search;
+    private Button time_search;//时间段模式
     private EditText regex;
-    private Button regex_search;
+    private Button regex_search;//联系人正则表达式模式
     private FragmentManager fragmentManager;
     private FragmentControl fragmentControl;
 

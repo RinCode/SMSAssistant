@@ -35,18 +35,18 @@ import java.util.Objects;
 
 /**
  * Created by rin on 2017/6/16.
- * 清理界面
+ * “清理”页面
  */
 
 public class Clean extends Fragment {
-    private List<SMS> smsData;
+    private List<SMS> smsData;//短信列表
     private RecyclerViewAdapter adapter;
     private RecyclerView smsList;
     private Context context;
     private ProgressDialog progressDialog;
     private SwipeRefreshLayout swipeRefreshLayout;
     private SMSHandler smsHandler;
-    private DefaultSMS defaultSMS;
+    private DefaultSMS defaultSMS;//默认短信app
     private String method = "null";
     private Long start_time = null;
     private Long end_time = null;
@@ -68,6 +68,7 @@ public class Clean extends Fragment {
         smsHandler = new SMSHandler(context);
         defaultSMS = new DefaultSMS(context);
         try {
+            //如果从advanced_other界面调用
             arg = getArguments();
             method = arg.getString("method");
             if (Objects.equals(method, "time")) {
