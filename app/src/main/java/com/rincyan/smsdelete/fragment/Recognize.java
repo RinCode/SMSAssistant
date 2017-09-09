@@ -54,6 +54,7 @@ public class Recognize extends Fragment {
                     editor.putBoolean("recognize", false);
                     editor.apply();
                 }
+                Toast.makeText(getActivity(),getResources().getString(R.string.restart),Toast.LENGTH_SHORT).show();
             }
         });
     }

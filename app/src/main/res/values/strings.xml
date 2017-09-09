@@ -3,7 +3,7 @@
     <!--ui-->
 
     <string name="app_name">SMS Assistant</string>
-    <string name="simple_version">v2.5</string>
+    <string name="simple_version">v2.5.1</string>
 
     <string name="usage">
         • This app needs SMS Write/Read Permission to work, and will change your default sms app temporarily.\n
@@ -53,7 +53,7 @@
 
     <string name="about_writer">Writer:</string>
     <string name="about_github">https://github.com/RinCode</string>
-    <string name="about_version">SMS Assistant(SMS Deleter) v2.5</string>
+    <string name="about_version">SMS Assistant(SMS Deleter) v2.5.1</string>
     <string name="about_translate_by">Translated By Google.</string>
 
     <!--end_ui-->

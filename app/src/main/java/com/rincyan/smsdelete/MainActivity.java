@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity
     private FragmentControl fragmentControl;
     private SmsReceiver smsReceiver;
     private Context context;
+    private IntentFilter mIntentFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,27 +66,20 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         context = this;
-
-        SharedPreferences preferences = this.getSharedPreferences("setting", MODE_PRIVATE);
-        Boolean accept = preferences.getBoolean("recognize", false);
-        if (accept) {
-            smsReceiver = new SmsReceiver();
-            IntentFilter filter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
-            filter.setPriority(999);
-            registerReceiver(smsReceiver, filter);
-            smsReceiver.setOnReceivedMessageListener(new SmsReceiver.MessageListener() {
-                @Override
-                public void onReceived(String message) {
-                    if (!Objects.equals(message, "-1")) {
-                        Toast.makeText(context, getResources().getString(R.string.fragment_recognized_text1) + message + getResources().getString(R.string.fragment_recognized_text2), Toast.LENGTH_SHORT).show();
-                        ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                        cm.setText(message);
-                    } else {
-                        Toast.makeText(context, getResources().getString(R.string.fragment_recognized_failed), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
+        requestPermissions();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_SMS)
+                == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS)
+                == PackageManager.PERMISSION_GRANTED) {
+            SharedPreferences preferences = this.getSharedPreferences("setting", MODE_PRIVATE);
+            Boolean accept = preferences.getBoolean("recognize", false);
+            if (accept) {
+                smsReceiver = new SmsReceiver();
+                mIntentFilter = new IntentFilter();
+                mIntentFilter.addAction("android.provider.Telephony.SMS_RECEIVED");
+                registerReceiver(smsReceiver, mIntentFilter);
+            }
         }
+
 
         Resources resources = getResources();
         DisplayMetrics dm = resources.getDisplayMetrics();
@@ -135,7 +129,6 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         hello = new Hello();
         fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.content, hello).commit();
-        requestPermissions();
         createDb();
     }
 
@@ -226,7 +219,7 @@ public class MainActivity extends AppCompatActivity
     private void requestPermissions() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_SMS)
                 != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_SMS}, 0);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_SMS,Manifest.permission.RECEIVE_SMS}, 0);
         }
         SharedPreferences preferences = this.getSharedPreferences("tos", MODE_PRIVATE);
         Boolean accept = preferences.getBoolean("accept", false);
@@ -266,6 +259,5 @@ public class MainActivity extends AppCompatActivity
     private View getFocus() {
         return this.getCurrentFocus();
     }
-
 
 }
