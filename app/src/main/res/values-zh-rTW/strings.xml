@@ -2,8 +2,8 @@
 
     <!--ui-->
 
-    <string name="app_name">驗證碼刪除器</string>
-    <string name="simple_version">v2.4.2</string>
+    <string name="app_name">短信助手</string>
+    <string name="simple_version">v2.5</string>
 
     <string name="usage">
         • 本軟件的正常工作需要授予短信讀/寫權限，並會申請臨時變更此軟件為默認短信應用。\n
@@ -15,8 +15,10 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <string name="nav_clean">清理</string>
+    <string name="nav_recognize">識別</string>
     <string name="nav_other">其他</string>
-    <string name="action_settings">關於</string>
+    <string name="action_settings">退出</string>
 
 
     <string name="smslist_detail">詳細信息</string>
@@ -51,7 +53,7 @@
 
     <string name="about_writer">作者：</string>
     <string name="about_github">https://github.com/RinCode</string>
-    <string name="about_version">驗證碼刪除器v2.4.1</string>
+    <string name="about_version">短信助手(原驗證碼刪除器)v2.5</string>
     <string name="about_translate_by">由谷歌提供翻譯支持。</string>
 
     <!--end_ui-->
@@ -79,10 +81,20 @@
     <string name="fragment_other_time_timeerr">時間不正確</string>
     <string name="fragment_other_time_crash">"未設置時間或不正確"</string>
 
+    <string name="fragment_recognize">識別</string>
+    <string name="fragment_recognized_text1">檢測到可能的驗證碼：</string>
+    <string name="fragment_recognized_text2">，已復製到剪切板。</string>
+    <string name="fragment_recognized_failed">可能接收到我們無法預測的驗證碼，請自行複制。</string>
+    <string name="recognize_switch">监听短信：</string>
+    <string name="recognize_attention">注意：\n
+1.本功能需要保持後台運行。\n
+2.我們僅使用簡單的匹配規則來進行提取（篩選出短信中長度大於等於4的數字串）。故若存在多個結果，則暫時不可識別。</string>
+
 
     <string name="fragment_about">關於</string>
 
     <!--toast-->
+    <string name="restart">請重啟應用程序</string>
     <string name="warning">警告</string>
     <string name="accept">接受</string>
     <string name="refuse">拒絕</string>

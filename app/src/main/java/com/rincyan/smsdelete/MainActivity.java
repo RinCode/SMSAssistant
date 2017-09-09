@@ -1,8 +1,10 @@
 package com.rincyan.smsdelete;
 
 import android.Manifest;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -34,8 +36,11 @@ import com.rincyan.smsdelete.fragment.Advance;
 import com.rincyan.smsdelete.fragment.Advance_regex;
 import com.rincyan.smsdelete.fragment.Clean;
 import com.rincyan.smsdelete.fragment.Hello;
+import com.rincyan.smsdelete.fragment.Recognize;
+import com.rincyan.smsdelete.receiver.SmsReceiver;
 import com.rincyan.smsdelete.utils.DefaultSMS;
 import com.rincyan.smsdelete.utils.FragmentControl;
+import com.rincyan.smsdelete.utils.SMSHandler;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -46,15 +51,41 @@ public class MainActivity extends AppCompatActivity
     private Clean clean;
     private Advance advance;
     private Addrule addrule;
+    private Recognize recognize;
     private About about;
     private FragmentManager fragmentManager;
     private FloatingActionButton fab;
     private FragmentControl fragmentControl;
+    private SmsReceiver smsReceiver;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        context = this;
+
+        SharedPreferences preferences = this.getSharedPreferences("setting", MODE_PRIVATE);
+        Boolean accept = preferences.getBoolean("recognize", false);
+        if (accept) {
+            smsReceiver = new SmsReceiver();
+            IntentFilter filter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
+            filter.setPriority(999);
+            registerReceiver(smsReceiver, filter);
+            smsReceiver.setOnReceivedMessageListener(new SmsReceiver.MessageListener() {
+                @Override
+                public void onReceived(String message) {
+                    if (!Objects.equals(message, "-1")) {
+                        Toast.makeText(context, getResources().getString(R.string.fragment_recognized_text1) + message + getResources().getString(R.string.fragment_recognized_text2), Toast.LENGTH_SHORT).show();
+                        ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                        cm.setText(message);
+                    } else {
+                        Toast.makeText(context, getResources().getString(R.string.fragment_recognized_failed), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
 
         Resources resources = getResources();
         DisplayMetrics dm = resources.getDisplayMetrics();
@@ -125,7 +156,7 @@ public class MainActivity extends AppCompatActivity
                 if (defaultSMS.isDefault()) {
                     defaultSMS.CancelDefault();
                 }
-                finish();
+                moveTaskToBack(false);
             }
             super.onBackPressed();
         }
@@ -142,9 +173,16 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
-            about = new About();
-            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.content, about).commit();
+            DefaultSMS defaultSMS = new DefaultSMS(this);
+            if (defaultSMS.isDefault()) {
+                defaultSMS.CancelDefault();
+            }
+            try {
+                unregisterReceiver(smsReceiver);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            finish();
             return true;
         }
 
@@ -165,6 +203,10 @@ public class MainActivity extends AppCompatActivity
             advance = new Advance();
             fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.content, advance).commit();
+        } else if (id == R.id.nav_recognize) {
+            recognize = new Recognize();
+            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.content, recognize).commit();
         } else if (id == R.id.nav_about) {
             about = new About();
             fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
