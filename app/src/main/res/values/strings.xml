@@ -2,8 +2,8 @@
 
     <!--ui-->
 
-    <string name="app_name">Text Message Deleter</string>
-    <string name="simple_version">v2.4.2</string>
+    <string name="app_name">SMS Assistant</string>
+    <string name="simple_version">v2.5</string>
 
     <string name="usage">
         • This app needs SMS Write/Read Permission to work, and will change your default sms app temporarily.\n
@@ -15,8 +15,10 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <string name="nav_clean">Clean</string>
+    <string name="nav_recognize">Recognize</string>
     <string name="nav_other">Other</string>
-    <string name="action_settings">About</string>
+    <string name="action_settings">Exit</string>
 
 
     <string name="smslist_detail">Detail:</string>
@@ -51,7 +53,7 @@
 
     <string name="about_writer">Writer:</string>
     <string name="about_github">https://github.com/RinCode</string>
-    <string name="about_version">Text Message Deleter v2.4.1</string>
+    <string name="about_version">SMS Assistant(SMS Deleter) v2.5</string>
     <string name="about_translate_by">Translated By Google.</string>
 
     <!--end_ui-->
@@ -79,10 +81,19 @@
     <string name="fragment_other_time_timeerr">Time error</string>
     <string name="fragment_other_time_crash">Time error or not set</string>
 
+    <string name="fragment_recognize">Recognize</string>
+    <string name="fragment_recognized_text1">Found auth code:</string>
+    <string name="fragment_recognized_text2">, and has copied to clipboard.</string>
+    <string name="fragment_recognized_failed">Can\'t recognize code, please copy by yourself.</string>
+    <string name="recognize_switch">Start listening sms:</string>
+    <string name="recognize_attention">Attention:\n
+1. This function needs to keep running in the background.\n
+2. We only use simple matching rules to match (matching the length of the message which is longer than or equal to 4 number characters). Therefore, if there are multiple results, it is temporarily unrecognizable.</string>
+
 
     <string name="fragment_about">About</string>
 
-
+    <string name="restart">Please restart this app</string>
     <string name="warning">Warning</string>
     <string name="accept">Accpet</string>
     <string name="refuse">Refuse</string>
