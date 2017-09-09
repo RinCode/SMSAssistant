@@ -3,7 +3,7 @@
     <!--ui-->
 
     <string name="app_name">短信助手</string>
-    <string name="simple_version">v2.5.1</string>
+    <string name="simple_version">v2.5.2</string>
 
     <string name="usage">
         • 本软件的正常工作需要授予短信读/写权限，并会申请临时变更此软件为默认短信应用。\n
@@ -53,7 +53,7 @@
 
     <string name="about_writer">作者：</string>
     <string name="about_github">https://github.com/RinCode</string>
-    <string name="about_version">短信助手(原验证码删除器)v2.5.1</string>
+    <string name="about_version">短信助手(原验证码删除器)v2.5.2</string>
     <string name="about_translate_by">由谷歌提供翻译支持。</string>
 
     <!--end_ui-->

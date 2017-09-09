@@ -41,7 +41,8 @@
 
         <!-- BroadcastReceiver that listens for incoming SMS messages -->
         <receiver
-            android:name=".receiver.SmsReceiver">
+            android:name=".receiver.SmsReceiver"
+            android:permission="android.permission.BROADCAST_SMS">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_DELIVER" />
             </intent-filter>
