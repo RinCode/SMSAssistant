@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rincyan.smsdelete.R;
-import com.rincyan.smsdelete.utils.FragmentControl;
+import com.rincyan.smsdelete.utils.GlobalControl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,7 +39,7 @@ public class Advance_other extends Fragment {
     private EditText regex;
     private Button regex_search;//联系人正则表达式模式
     private FragmentManager fragmentManager;
-    private FragmentControl fragmentControl;
+    private GlobalControl globalControl;
 
 
     @Nullable
@@ -53,9 +53,9 @@ public class Advance_other extends Fragment {
         regex = view.findViewById(R.id.contact_rule);
         regex_search = view.findViewById(R.id.contact_search);
         fragmentManager = getActivity().getSupportFragmentManager();
-        fragmentControl = (FragmentControl) getActivity().getApplicationContext();
-        fragmentControl.setFabIconCancle();
-        fragmentControl.set_fragment_name(getResources().getString(R.string.fragment_other_mode));
+        globalControl = (GlobalControl) getActivity().getApplicationContext();
+        globalControl.setFabIconCancle();
+        globalControl.set_fragment_name(getResources().getString(R.string.fragment_other_mode));
         return view;
     }
 
@@ -104,7 +104,7 @@ public class Advance_other extends Fragment {
                         bundle.putLong("start_time",start);
                         bundle.putLong("end_time",end);
                         clean.setArguments(bundle);
-                        fragmentControl.setFragment(clean);
+                        globalControl.setFragment(clean);
                         fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.content, clean).commit();
                     } else {
                         Toast.makeText(getActivity(), R.string.fragment_other_time_timeerr, Toast.LENGTH_SHORT).show();
@@ -126,7 +126,7 @@ public class Advance_other extends Fragment {
                     bundle.putString("method", "contact");
                     bundle.putString("regex",regex.getText().toString());
                     clean.setArguments(bundle);
-                    fragmentControl.setFragment(clean);
+                    globalControl.setFragment(clean);
                     InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(regex.getWindowToken(),0);
                     fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.content, clean).commit();

@@ -107,6 +107,8 @@
     <string name="delete_err">刪除失敗</string>
     <string name="delete_success">刪除成功</string>
     <string name="no_data_del">"沒有數據可以刪除"</string>
+    <string name="start_listening">開始監聽</string>
+    <string name="stop_listening">停止監聽</string>
 
     <string name="tos">使用協議及說明</string>
     <string name="no_sms_permission">無法獲取短信權限</string>

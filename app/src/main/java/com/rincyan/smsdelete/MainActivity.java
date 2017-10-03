@@ -1,10 +1,8 @@
 package com.rincyan.smsdelete;
 
 import android.Manifest;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -17,7 +15,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -33,14 +30,11 @@ import android.widget.Toast;
 import com.rincyan.smsdelete.fragment.About;
 import com.rincyan.smsdelete.fragment.Addrule;
 import com.rincyan.smsdelete.fragment.Advance;
-import com.rincyan.smsdelete.fragment.Advance_regex;
 import com.rincyan.smsdelete.fragment.Clean;
 import com.rincyan.smsdelete.fragment.Hello;
 import com.rincyan.smsdelete.fragment.Recognize;
-import com.rincyan.smsdelete.receiver.SmsReceiver;
 import com.rincyan.smsdelete.utils.DefaultSMS;
-import com.rincyan.smsdelete.utils.FragmentControl;
-import com.rincyan.smsdelete.utils.SMSHandler;
+import com.rincyan.smsdelete.utils.GlobalControl;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -55,10 +49,8 @@ public class MainActivity extends AppCompatActivity
     private About about;
     private FragmentManager fragmentManager;
     private FloatingActionButton fab;
-    private FragmentControl fragmentControl;
-    private SmsReceiver smsReceiver;
+    private GlobalControl globalControl;
     private Context context;
-    private IntentFilter mIntentFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,19 +59,6 @@ public class MainActivity extends AppCompatActivity
 
         context = this;
         requestPermissions();
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_SMS)
-                == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS)
-                == PackageManager.PERMISSION_GRANTED) {
-            SharedPreferences preferences = this.getSharedPreferences("setting", MODE_PRIVATE);
-            Boolean accept = preferences.getBoolean("recognize", false);
-            if (accept) {
-                smsReceiver = new SmsReceiver();
-                mIntentFilter = new IntentFilter();
-                mIntentFilter.addAction("android.provider.Telephony.SMS_RECEIVED");
-                registerReceiver(smsReceiver, mIntentFilter);
-            }
-        }
-
 
         Resources resources = getResources();
         DisplayMetrics dm = resources.getDisplayMetrics();
@@ -90,20 +69,21 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         fragmentManager = getSupportFragmentManager();
-        fragmentControl = (FragmentControl) this.getApplicationContext();
+        globalControl = (GlobalControl) this.getApplicationContext();
         fab = (FloatingActionButton) findViewById(R.id.fab);
-        fragmentControl.setFab(fab);
+        globalControl.startListen();
+        globalControl.setFab(fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //悬浮按钮动作
-                if (Objects.equals(fragmentControl.get_fragment_name(), getResources().getString(R.string.fragment_clean))) {
-                    clean = (Clean) fragmentControl.getFragment();
+                if (Objects.equals(globalControl.get_fragment_name(), getResources().getString(R.string.fragment_clean))) {
+                    clean = (Clean) globalControl.getFragment();
                     clean.deleteAll();
-                } else if (Objects.equals(fragmentControl.get_fragment_name(), getResources().getString(R.string.fragment_regex_mode))) {
+                } else if (Objects.equals(globalControl.get_fragment_name(), getResources().getString(R.string.fragment_regex_mode))) {
                     addrule = new Addrule();
                     fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.content, addrule).commit();
-                } else if (Objects.equals(fragmentControl.get_fragment_name(), getResources().getString(R.string.fragment_addrule))) {
+                } else if (Objects.equals(globalControl.get_fragment_name(), getResources().getString(R.string.fragment_addrule))) {
                     addrule.save();
                 }
             }
@@ -138,10 +118,10 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            if (Objects.equals(fragmentControl.get_fragment_name(), getResources().getString(R.string.fragment_regex_mode))) {
-                fragmentControl.set_fragment_name(getResources().getString(R.string.fragment_advance));
-            } else if (Objects.equals(fragmentControl.get_fragment_name(), getResources().getString(R.string.addrule_rule))) {
-                fragmentControl.set_fragment_name(getResources().getString(R.string.fragment_regex_mode));
+            if (Objects.equals(globalControl.get_fragment_name(), getResources().getString(R.string.fragment_regex_mode))) {
+                globalControl.set_fragment_name(getResources().getString(R.string.fragment_advance));
+            } else if (Objects.equals(globalControl.get_fragment_name(), getResources().getString(R.string.addrule_rule))) {
+                globalControl.set_fragment_name(getResources().getString(R.string.fragment_regex_mode));
             }
             if (fragmentManager.getBackStackEntryCount() == 1) {
                 //退出前检查是否已还原默认短信应用
@@ -149,6 +129,8 @@ public class MainActivity extends AppCompatActivity
                 if (defaultSMS.isDefault()) {
                     defaultSMS.CancelDefault();
                 }
+                hello = new Hello();
+                fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.content, hello).commit();
                 moveTaskToBack(false);
             }
             super.onBackPressed();
@@ -170,11 +152,7 @@ public class MainActivity extends AppCompatActivity
             if (defaultSMS.isDefault()) {
                 defaultSMS.CancelDefault();
             }
-            try {
-                unregisterReceiver(smsReceiver);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            globalControl.stopListen();
             finish();
             return true;
         }
@@ -189,7 +167,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_clean) {
             clean = new Clean();
-            fragmentControl.setFragment(clean);
+            globalControl.setFragment(clean);
             fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.content, clean).commit();
         } else if (id == R.id.nav_advanced) {
@@ -219,7 +197,7 @@ public class MainActivity extends AppCompatActivity
     private void requestPermissions() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_SMS)
                 != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_SMS,Manifest.permission.RECEIVE_SMS}, 0);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_SMS, Manifest.permission.RECEIVE_SMS}, 0);
         }
         SharedPreferences preferences = this.getSharedPreferences("tos", MODE_PRIVATE);
         Boolean accept = preferences.getBoolean("accept", false);

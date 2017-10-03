@@ -3,7 +3,6 @@ package com.rincyan.smsdelete.fragment;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,13 +11,11 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rincyan.smsdelete.R;
-import com.rincyan.smsdelete.utils.FragmentControl;
+import com.rincyan.smsdelete.utils.GlobalControl;
 
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -36,7 +33,7 @@ public class Addrule extends Fragment {
     private EditText text;//待匹配内容
     private TextView result;//匹配结果
     private SQLiteDatabase db;
-    private FragmentControl fragmentControl;
+    private GlobalControl globalControl;
 
     @Nullable
     @Override
@@ -48,9 +45,9 @@ public class Addrule extends Fragment {
         result = view.findViewById(R.id.result);
         db = getActivity().openOrCreateDatabase("smsdel.db", getActivity().MODE_PRIVATE, null);
         getActivity().setTitle(R.string.fragment_addrule);
-        fragmentControl = (FragmentControl) getActivity().getApplicationContext();
-        fragmentControl.setFabIconSava();
-        fragmentControl.set_fragment_name(getResources().getString(R.string.fragment_addrule));
+        globalControl = (GlobalControl) getActivity().getApplicationContext();
+        globalControl.setFabIconSava();
+        globalControl.set_fragment_name(getResources().getString(R.string.fragment_addrule));
         return view;
     }
 

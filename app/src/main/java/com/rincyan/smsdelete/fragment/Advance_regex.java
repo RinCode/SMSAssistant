@@ -19,7 +19,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.rincyan.smsdelete.R;
-import com.rincyan.smsdelete.utils.FragmentControl;
+import com.rincyan.smsdelete.utils.GlobalControl;
 
 import java.util.ArrayList;
 
@@ -36,7 +36,7 @@ public class Advance_regex extends Fragment {
     private ArrayList<String> regexData;
     private SharedPreferences preferences;
     private SQLiteDatabase db;
-    private FragmentControl fragmentControl;
+    private GlobalControl globalControl;
 
     @Nullable
     @Override
@@ -45,9 +45,9 @@ public class Advance_regex extends Fragment {
         listView = view.findViewById(R.id.advance_regex_list);
         switchBtn = view.findViewById(R.id.switch_button);
         getActivity().setTitle(R.string.fragment_regex_mode);
-        fragmentControl = (FragmentControl)getActivity().getApplicationContext();
-        fragmentControl.setFabIconAdd();
-        fragmentControl.set_fragment_name(getResources().getString(R.string.fragment_regex_mode));
+        globalControl = (GlobalControl)getActivity().getApplicationContext();
+        globalControl.setFabIconAdd();
+        globalControl.set_fragment_name(getResources().getString(R.string.fragment_regex_mode));
         return view;
     }
 

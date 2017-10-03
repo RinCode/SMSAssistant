@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.rincyan.smsdelete.R;
-import com.rincyan.smsdelete.utils.FragmentControl;
+import com.rincyan.smsdelete.utils.GlobalControl;
 
 /**
  * Created by rin on 2017/6/16.
@@ -17,15 +17,15 @@ import com.rincyan.smsdelete.utils.FragmentControl;
  */
 
 public class About extends Fragment {
-    private FragmentControl fragmentControl;
+    private GlobalControl globalControl;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.about, container, false);
         getActivity().setTitle(R.string.fragment_about);
-        fragmentControl = (FragmentControl) getActivity().getApplicationContext();
-        fragmentControl.setFabIconCancle();
-        fragmentControl.set_fragment_name(getResources().getString(R.string.fragment_about));
+        globalControl = (GlobalControl) getActivity().getApplicationContext();
+        globalControl.setFabIconCancle();
+        globalControl.set_fragment_name(getResources().getString(R.string.fragment_about));
         return view;
     }
 }

@@ -9,10 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-import android.widget.Toast;
 
 import com.rincyan.smsdelete.R;
-import com.rincyan.smsdelete.utils.FragmentControl;
+import com.rincyan.smsdelete.utils.GlobalControl;
 
 /**
  * Created by rin on 2017/09/09.
@@ -20,7 +19,7 @@ import com.rincyan.smsdelete.utils.FragmentControl;
  */
 
 public class Recognize extends Fragment {
-    private FragmentControl fragmentControl;
+    private GlobalControl globalControl;
     private SwitchCompat switchBtn;
     private SharedPreferences preferences;
 
@@ -30,9 +29,9 @@ public class Recognize extends Fragment {
         View view = inflater.inflate(R.layout.frag_recognize, container, false);
         getActivity().setTitle(R.string.fragment_recognize);
         switchBtn = view.findViewById(R.id.switch_button);
-        fragmentControl = (FragmentControl) getActivity().getApplicationContext();
-        fragmentControl.setFabIconCancle();
-        fragmentControl.set_fragment_name(getResources().getString(R.string.fragment_recognize));
+        globalControl = (GlobalControl) getActivity().getApplicationContext();
+        globalControl.setFabIconCancle();
+        globalControl.set_fragment_name(getResources().getString(R.string.fragment_recognize));
         return view;
     }
 
@@ -48,13 +47,13 @@ public class Recognize extends Fragment {
                     SharedPreferences.Editor editor = getActivity().getSharedPreferences("setting", getActivity().MODE_PRIVATE).edit();
                     editor.putBoolean("recognize", true);
                     editor.apply();
-                    Toast.makeText(getActivity(),getResources().getString(R.string.restart),Toast.LENGTH_SHORT).show();
+                    globalControl.startListen();
                 } else {
                     SharedPreferences.Editor editor = getActivity().getSharedPreferences("setting", getActivity().MODE_PRIVATE).edit();
                     editor.putBoolean("recognize", false);
                     editor.apply();
+                    globalControl.stopListen();
                 }
-                Toast.makeText(getActivity(),getResources().getString(R.string.restart),Toast.LENGTH_SHORT).show();
             }
         });
     }

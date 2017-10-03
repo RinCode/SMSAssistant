@@ -12,7 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.rincyan.smsdelete.R;
-import com.rincyan.smsdelete.utils.FragmentControl;
+import com.rincyan.smsdelete.utils.GlobalControl;
 
 import java.util.ArrayList;
 
@@ -30,7 +30,7 @@ public class Advance extends Fragment {
     private Advance_regex advance_regex;//正则表达式模式
     private Advance_other advance_other;//其他模式
     private FragmentManager fragmentManager;
-    private FragmentControl fragmentControl;
+    private GlobalControl globalControl;
 
     @Nullable
     @Override
@@ -39,15 +39,15 @@ public class Advance extends Fragment {
         advance_method = view.findViewById(R.id.advancedmethod);
         fragmentManager = getActivity().getSupportFragmentManager();
         getActivity().setTitle(getResources().getString(R.string.fragment_advance));
-        fragmentControl = (FragmentControl) getActivity().getApplicationContext();
-        fragmentControl.setFabIconCancle();
-        fragmentControl.set_fragment_name(getResources().getString(R.string.fragment_advance));
+        globalControl = (GlobalControl) getActivity().getApplicationContext();
+        globalControl.setFabIconCancle();
+        globalControl.set_fragment_name(getResources().getString(R.string.fragment_advance));
         return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        final FragmentControl fragmentControl = (FragmentControl) getActivity().getApplicationContext();
+        final GlobalControl globalControl = (GlobalControl) getActivity().getApplicationContext();
         methodData = new ArrayList<String>();
         adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, getMethod());
         advance_method.setAdapter(adapter);
@@ -57,14 +57,14 @@ public class Advance extends Fragment {
                 switch (i){
                     case 0:
                         advance_regex = new Advance_regex();
-                        fragmentControl.set_fragment_name(getResources().getString(R.string.fragment_regex_mode));
-                        fragmentControl.setFragment(advance_regex);
+                        globalControl.set_fragment_name(getResources().getString(R.string.fragment_regex_mode));
+                        globalControl.setFragment(advance_regex);
                         fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.content, advance_regex).commit();
                         break;
                     default:
                         advance_other = new Advance_other();
-                        fragmentControl.set_fragment_name(getResources().getString(R.string.fragment_other_mode));
-                        fragmentControl.setFragment(advance_other);
+                        globalControl.set_fragment_name(getResources().getString(R.string.fragment_other_mode));
+                        globalControl.setFragment(advance_other);
                         fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.content, advance_other).commit();
                         break;
                 }

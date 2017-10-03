@@ -13,11 +13,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,9 +23,8 @@ import com.rincyan.smsdelete.R;
 import com.rincyan.smsdelete.recyclerview.RecyclerViewAdapter;
 import com.rincyan.smsdelete.recyclerview.SMS;
 import com.rincyan.smsdelete.utils.DefaultSMS;
-import com.rincyan.smsdelete.utils.FragmentControl;
+import com.rincyan.smsdelete.utils.GlobalControl;
 import com.rincyan.smsdelete.utils.SMSHandler;
-import com.rincyan.smsdelete.utils.isCapture;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +49,7 @@ public class Clean extends Fragment {
     private Long end_time = null;
     private String regex = "";
     private Bundle arg;
-    private FragmentControl fragmentControl;
+    private GlobalControl globalControl;
 
     @Nullable
     @Override
@@ -81,9 +78,9 @@ public class Clean extends Fragment {
             e.printStackTrace();
         }
         getActivity().setTitle(R.string.fragment_clean);
-        fragmentControl = (FragmentControl) getActivity().getApplicationContext();
-        fragmentControl.setFabIconDel();
-        fragmentControl.set_fragment_name(getResources().getString(R.string.fragment_clean));
+        globalControl = (GlobalControl) getActivity().getApplicationContext();
+        globalControl.setFabIconDel();
+        globalControl.set_fragment_name(getResources().getString(R.string.fragment_clean));
         return view;
     }
 
