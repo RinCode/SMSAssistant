@@ -113,6 +113,9 @@ public class Clean extends Fragment {
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     if (smsHandler.deleteSms(smsData.get(position).getId().toString()) == 1) {
                                         smsData.remove(position);
+                                        if(smsData.get(position).getWhitelist()){
+                                            db.execSQL("delete from whitelist where textid=" + String.valueOf(smsData.get(position).getId()));
+                                        }
                                         adapter.notifyDataSetChanged();
                                         Toast.makeText(context, R.string.delete_success, Toast.LENGTH_SHORT).show();
                                     } else {

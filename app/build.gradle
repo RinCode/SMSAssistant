@@ -7,7 +7,7 @@ android {
         applicationId "com.rincyan.smsdelete"
         minSdkVersion 19
         targetSdkVersion 26
-        versionCode 14
+        versionCode 15
         versionName "2.6"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
