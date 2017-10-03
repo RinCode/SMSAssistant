@@ -3,7 +3,7 @@
     <!--ui-->
 
     <string name="app_name">SMS Assistant</string>
-    <string name="simple_version">v2.5.2</string>
+    <string name="simple_version">v2.6</string>
 
     <string name="usage">
         • This app needs SMS Write/Read Permission to work, and will change your default sms app temporarily.\n
@@ -53,14 +53,13 @@
 
     <string name="about_writer">Writer:</string>
     <string name="about_github">https://github.com/RinCode</string>
-    <string name="about_version">SMS Assistant(SMS Deleter) v2.5.2</string>
+    <string name="about_version">SMS Assistant(SMS Deleter) v2.6</string>
     <string name="about_translate_by">Translated By Google.</string>
 
     <!--end_ui-->
 
     <string name="fragment_clean">Clean</string>
-    <string name="fragment_clean_willdel1">This will delete all the contents of the list, a total of</string>
-    <string name="fragment_clean_willdel2">items. Sure?</string>
+    <string name="fragment_clean_willdel">We will delete all the contents of the list except white list</string>
     <string name="fragment_clean_error">Delete failed, please set the default SMS application after retry.</string>
     <string name="fragment_clean_success">Delete the success, exit the application before you restore the default SMS application.</string>
 
@@ -99,7 +98,8 @@
     <string name="refuse">Refuse</string>
     <string name="delete">Delete</string>
     <string name="deleting">Deleting</string>
-    <string name="remove_from_delete">Remove from list</string>
+    <string name="add_to_whitelist">Add to white list</string>
+    <string name="remove_from_whitelist">Remove from white list</string>
     <string name="sure">OK</string>
     <string name="sure_delete">Sure？</string>
     <string name="cancel">Cancel</string>

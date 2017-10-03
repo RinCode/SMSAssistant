@@ -3,6 +3,8 @@ package com.rincyan.smsdelete.fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Looper;
@@ -50,6 +52,8 @@ public class Clean extends Fragment {
     private String regex = "";
     private Bundle arg;
     private GlobalControl globalControl;
+    private SQLiteDatabase db;
+
 
     @Nullable
     @Override
@@ -81,6 +85,7 @@ public class Clean extends Fragment {
         globalControl = (GlobalControl) getActivity().getApplicationContext();
         globalControl.setFabIconDel();
         globalControl.set_fragment_name(getResources().getString(R.string.fragment_clean));
+        db = getActivity().openOrCreateDatabase("smsdel.db", getActivity().MODE_PRIVATE, null);
         return view;
     }
 
@@ -116,10 +121,16 @@ public class Clean extends Fragment {
                                     }
                                 }
                             })
-                            .setNeutralButton(R.string.remove_from_delete, new DialogInterface.OnClickListener() {
+                            .setNeutralButton(smsData.get(position).getWhitelist()?R.string.remove_from_whitelist:R.string.add_to_whitelist, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    smsData.remove(position);
+                                    if (smsData.get(position).getWhitelist()) {
+                                        db.execSQL("delete from whitelist where textid=" + String.valueOf(smsData.get(position).getId()));
+                                        smsData.get(position).setWhitelist(false);
+                                    } else {
+                                        db.execSQL("insert into whitelist ('textid') values ('" + String.valueOf(smsData.get(position).getId()) + "')");
+                                        smsData.get(position).setWhitelist(true);
+                                    }
                                     adapter.notifyDataSetChanged();
                                 }
                             })
@@ -149,7 +160,7 @@ public class Clean extends Fragment {
     public void deleteAll() {
         if (!checkEmpty()) {
             new AlertDialog.Builder(context).setTitle(R.string.warning)
-                    .setMessage(getResources().getString(R.string.fragment_clean_willdel1) + " " + smsData.size() + " " + getResources().getString(R.string.fragment_clean_willdel2))
+                    .setMessage(getResources().getString(R.string.fragment_clean_willdel))
                     .setIcon(android.R.drawable.ic_dialog_info)
                     .setPositiveButton(R.string.sure, new DialogInterface.OnClickListener() {
 
@@ -170,13 +181,15 @@ public class Clean extends Fragment {
                                     int count = 0;
                                     SMSHandler smsHandler = new SMSHandler(context);
                                     for (SMS tmp : smsData) {
-                                        flag = smsHandler.deleteSms(tmp.getId().toString());
-                                        if (flag != 1) {
-                                            progressDialog.dismiss();
-                                            Toast.makeText(context, R.string.fragment_clean_error, Toast.LENGTH_SHORT).show();
-                                            defaultSMS.SetDefault();
-                                            Looper.loop();
-                                            return;
+                                        if(!tmp.getWhitelist()) {
+                                            flag = smsHandler.deleteSms(tmp.getId().toString());
+                                            if (flag != 1) {
+                                                progressDialog.dismiss();
+                                                Toast.makeText(context, R.string.fragment_clean_error, Toast.LENGTH_SHORT).show();
+                                                defaultSMS.SetDefault();
+                                                Looper.loop();
+                                                return;
+                                            }
                                         }
                                         count += 1;
                                         progressDialog.setProgress((int) ((float) count / (float) smsData.size() * 100));

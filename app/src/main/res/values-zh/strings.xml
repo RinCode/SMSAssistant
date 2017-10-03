@@ -3,7 +3,7 @@
     <!--ui-->
 
     <string name="app_name">短信助手</string>
-    <string name="simple_version">v2.5.2</string>
+    <string name="simple_version">v2.6</string>
 
     <string name="usage">
         • 本软件的正常工作需要授予短信读/写权限，并会申请临时变更此软件为默认短信应用。\n
@@ -53,14 +53,13 @@
 
     <string name="about_writer">作者：</string>
     <string name="about_github">https://github.com/RinCode</string>
-    <string name="about_version">短信助手(原验证码删除器)v2.5.2</string>
+    <string name="about_version">短信助手(原验证码删除器)v2.6</string>
     <string name="about_translate_by">由谷歌提供翻译支持。</string>
 
     <!--end_ui-->
 
     <string name="fragment_clean">清理</string>
-    <string name="fragment_clean_willdel1">本操作将删除表内全部内容，共</string>
-    <string name="fragment_clean_willdel2">项，确认删除？</string>
+    <string name="fragment_clean_willdel">本操作将删除表内全部非白名单内容</string>
     <string name="fragment_clean_error">删除失败，请设置为默认短信应用后重试</string>
     <string name="fragment_clean_success">删除成功，退出应用前请恢复默认短信应用</string>
 
@@ -100,7 +99,8 @@
     <string name="refuse">拒绝</string>
     <string name="delete">删除</string>
     <string name="deleting">正在删除</string>
-    <string name="remove_from_delete">移出删除列表</string>
+    <string name="add_to_whitelist">加入白名单</string>
+    <string name="remove_from_whitelist">移出白名单</string>
     <string name="sure">确定</string>
     <string name="sure_delete">确认删除？</string>
     <string name="cancel">取消</string>

@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
+import java.util.StringTokenizer;
 
 /**
  * Created by rin on 2017/6/15.
@@ -27,6 +28,7 @@ import java.util.Objects;
  */
 
 public class SMSHandler {
+    private SQLiteDatabase db;
     private long start_time;
     private long end_time;
     private String regex;
@@ -44,13 +46,16 @@ public class SMSHandler {
 
     public ArrayList getSMS(String method) {
         final ArrayList smsData = new ArrayList<>();
+        boolean whitelist = false;
         try {
+            db = context.openOrCreateDatabase("smsdel.db", context.MODE_PRIVATE, null);
             ContentResolver resolver = context.getContentResolver();
             final Cursor cursor = resolver.query(SMS_URI, ALL_THREADS_PROJECTION,
                     null, null, "date desc");
             isCapture ic = new isCapture(context);
             assert cursor != null;
             while ((cursor.moveToNext())) {
+                whitelist = false;
                 int indexBody = cursor.getColumnIndex("body");
                 int indexAddress = cursor.getColumnIndex("address");
                 int indexDate = cursor.getColumnIndex("date");
@@ -61,35 +66,43 @@ public class SMSHandler {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd hh:mm");
                 Date formatDate = new Date(Long.parseLong(cursor.getString(indexDate)));
                 String date = dateFormat.format(formatDate);
+
+                Cursor c = db.rawQuery("select * from whitelist where textid=" + String.valueOf(id), null);
+                while(c.moveToNext()){
+                    c.close();
+                    whitelist = true;
+                }
+                c.close();
+
                 if (Objects.equals(method, "time")) {
                     if (ic.timeDetect(start_time, end_time, Long.parseLong(cursor.getString(indexDate)))) {
-                        smsData.add(new SMS(address, body, date, id));
+                        smsData.add(new SMS(address, body, date, id, whitelist));
                     }
                 } else if (Objects.equals(method, "contact")) {
-                    if(ic.contactDetect(address,regex)){
-                        smsData.add(new SMS(address, body, date, id));
+                    if (ic.contactDetect(address, regex)) {
+                        smsData.add(new SMS(address, body, date, id, whitelist));
                     }
                 } else {
                     preferences = context.getSharedPreferences("setting", context.MODE_PRIVATE);
                     Boolean checked = preferences.getBoolean("advance", false);
                     if (!checked) {
                         if (ic.simpleDetect(body)) {
-                            smsData.add(new SMS(address, body, date, id));
+                            smsData.add(new SMS(address, body, date, id, whitelist));
                         }
                     } else {
                         if (ic.advanceDetect(body)) {
-                            smsData.add(new SMS(address, body, date, id));
+                            smsData.add(new SMS(address, body, date, id, whitelist));
                         }
                     }
                 }
             }
             if (smsData.isEmpty()) {
-                smsData.add(new SMS(context.getResources().getString(R.string.no_sms_detected), "", "", (long) -1));
+                smsData.add(new SMS(context.getResources().getString(R.string.no_sms_detected), "", "", (long) -1, whitelist));
             }
             cursor.close();
 
         } catch (Exception e) {
-            smsData.add(new SMS(context.getResources().getString(R.string.no_sms_permission), "", "", (long) -1));
+            smsData.add(new SMS(context.getResources().getString(R.string.no_sms_permission), "", "", (long) -1, whitelist));
         }
         return smsData;
     }
@@ -108,7 +121,7 @@ public class SMSHandler {
         this.end_time = l2;
     }
 
-    public void setRegex(String regex){
+    public void setRegex(String regex) {
         this.regex = regex;
     }
 }

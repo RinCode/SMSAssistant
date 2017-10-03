@@ -191,6 +191,7 @@ public class MainActivity extends AppCompatActivity
     private void createDb() {
         SQLiteDatabase db = openOrCreateDatabase("smsdel.db", MODE_PRIVATE, null);
         db.execSQL("create table if not exists regex (id integer primary key autoincrement,rule text not null)");
+        db.execSQL("create table if not exists whitelist (id integer primary key autoincrement,textid text not null)");
         db.close();
     }
 

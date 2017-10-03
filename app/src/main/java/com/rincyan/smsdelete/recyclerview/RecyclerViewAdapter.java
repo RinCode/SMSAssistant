@@ -1,5 +1,6 @@
 package com.rincyan.smsdelete.recyclerview;
 
+import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,10 +11,10 @@ import android.widget.TextView;
 import com.rincyan.smsdelete.R;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by rin on 2017/6/15.
- *
  */
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.SmsViewHolder> {
@@ -72,9 +73,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 }
             });
         }
+
         holder.smsNum.setText(sms.get(i).getNum());
+        if (sms.get(i).getWhitelist()) {
+            holder.itemView.setBackgroundColor(Color.GREEN);
+        }else{
+            holder.itemView.setBackgroundColor(Color.WHITE);
+        }
         holder.smsBody.setText(sms.get(i).getBody());
         holder.smsDate.setText(sms.get(i).getDate());
+        holder.itemView.setTag(sms.get(i));
+
     }
 
     @Override
