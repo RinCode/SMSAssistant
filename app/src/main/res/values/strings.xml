@@ -50,6 +50,13 @@
     <string name="advance_regex_switch">Turn on RegEx Mode</string>
     <string name="advance_regex_attention">Tip: Please try to narrow the RegEx match range, so as not to accidentally deleted.</string>
     <string name="advance_regex_rules">Current rules:</string>
+    <string name="advance_regex_online_rules">Online update</string>
+    <string name="advance_regex_online_rules_notice">Online rules are only for Simplified Chinese.</string>
+    <string name="advance_regex_online_rules_updated">updated</string>
+    <string name="advance_regex_clear_rules">Delete all?</string>
+    <string name="advance_regex_network_error">Network error</string>
+    <string name="advance_regex_server_error">Server error</string>
+
 
     <string name="about_writer">Writer:</string>
     <string name="about_github">https://github.com/RinCode</string>

@@ -85,7 +85,6 @@ public class Clean extends Fragment {
         globalControl = (GlobalControl) getActivity().getApplicationContext();
         globalControl.setFabIconDel();
         globalControl.set_fragment_name(getResources().getString(R.string.fragment_clean));
-        db = getActivity().openOrCreateDatabase("smsdel.db", getActivity().MODE_PRIVATE, null);
         return view;
     }
 
@@ -113,9 +112,11 @@ public class Clean extends Fragment {
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     if (smsHandler.deleteSms(smsData.get(position).getId().toString()) == 1) {
                                         smsData.remove(position);
+                                        db = getActivity().openOrCreateDatabase("smsdel.db", getActivity().MODE_PRIVATE, null);
                                         if(smsData.get(position).getWhitelist()){
                                             db.execSQL("delete from whitelist where textid=" + String.valueOf(smsData.get(position).getId()));
                                         }
+                                        db.close();
                                         adapter.notifyDataSetChanged();
                                         Toast.makeText(context, R.string.delete_success, Toast.LENGTH_SHORT).show();
                                     } else {
@@ -127,6 +128,7 @@ public class Clean extends Fragment {
                             .setNeutralButton(smsData.get(position).getWhitelist()?R.string.remove_from_whitelist:R.string.add_to_whitelist, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
+                                    db = getActivity().openOrCreateDatabase("smsdel.db", getActivity().MODE_PRIVATE, null);
                                     if (smsData.get(position).getWhitelist()) {
                                         db.execSQL("delete from whitelist where textid=" + String.valueOf(smsData.get(position).getId()));
                                         smsData.get(position).setWhitelist(false);
@@ -134,6 +136,7 @@ public class Clean extends Fragment {
                                         db.execSQL("insert into whitelist ('textid') values ('" + String.valueOf(smsData.get(position).getId()) + "')");
                                         smsData.get(position).setWhitelist(true);
                                     }
+                                    db.close();
                                     adapter.notifyDataSetChanged();
                                 }
                             })

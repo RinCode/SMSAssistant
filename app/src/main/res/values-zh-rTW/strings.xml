@@ -74,6 +74,12 @@
     <string name="fragment_regex_no_match">無匹配</string>
     <string name="fragment_regex_save_successful">保存成功</string>
     <string name="fragment_regex_save_failed">保存失敗</string>
+    <string name="advance_regex_online_rules">在線更新</string>
+    <string name="advance_regex_online_rules_notice">在線規則僅適用簡體中文用戶。 </string>
+    <string name="advance_regex_online_rules_updated">更新成功</string>
+    <string name="advance_regex_clear_rules">清空？</string>
+    <string name="advance_regex_network_error">網絡錯誤</string>
+    <string name="advance_regex_server_error">服務器錯誤</string>
 
     <string name="fragment_other_mode">其他模式</string>
     <string name="fragment_addrule">添加規則</string>

@@ -104,6 +104,7 @@ public class SMSHandler {
         } catch (Exception e) {
             smsData.add(new SMS(context.getResources().getString(R.string.no_sms_permission), "", "", (long) -1, whitelist));
         }
+        db.close();
         return smsData;
     }
 
