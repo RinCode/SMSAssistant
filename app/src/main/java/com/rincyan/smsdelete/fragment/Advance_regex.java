@@ -30,6 +30,7 @@ import com.android.volley.toolbox.Volley;
 import com.rincyan.smsdelete.R;
 import com.rincyan.smsdelete.utils.GlobalControl;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -165,9 +166,9 @@ public class Advance_regex extends Fragment {
             }
             c.close();
         }
-        if (regexData.isEmpty()) {
-            Toast.makeText(getActivity(), R.string.fragment_regex_no_exist_regex, Toast.LENGTH_SHORT).show();
-        }
+//        if (regexData.isEmpty()) {
+//            Toast.makeText(getActivity(), R.string.fragment_regex_no_exist_regex, Toast.LENGTH_SHORT).show();
+//        }
         db.close();
         adapter.notifyDataSetChanged();
     }
@@ -211,12 +212,11 @@ public class Advance_regex extends Fragment {
                 if (error.equals("1")) {
                     Toast.makeText(getActivity(), R.string.advance_regex_server_error, Toast.LENGTH_SHORT).show();
                 } else {
-                    JSONObject data = jsonObject.getJSONObject("data");
-                    Iterator iterator = data.keys();
+                    JSONArray data = jsonObject.getJSONArray("data");
                     db = getActivity().openOrCreateDatabase("smsdel.db", getActivity().MODE_PRIVATE, null);
-                    while (iterator.hasNext()) {
-                        String key = (String) iterator.next();
-                        String value = data.getString(key);
+                    System.out.print(data);
+                    for (int i =0;i<data.length();i++){
+                        String value = data.getString(i);
                         if (!regexData.contains(value)) {
                             try {
                                 db.execSQL("insert into regex(rule) values('" + value + "')");
