@@ -185,7 +185,7 @@ public class Advance_regex extends Fragment {
 
     public void checkUpdate() {
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        JsonObjectRequest request = new JsonObjectRequest("https://api.rincyan.com/tools/sms.php", null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest request = new JsonObjectRequest("https://api.rincyan.com/app/sms_rule.php", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
                 Message msg = Message.obtain();
