@@ -11,10 +11,31 @@ android {
         versionName "2.6.01"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+//    buildTypes {
+//        release {
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//        }
+//    }
+
+    signingConfigs {
+        release {
+            storeFile file('D:\\tachi.keystore')
+            storePassword '62226546'
+            keyAlias 'rincyan'
+            keyPassword 'httthgfh'
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            signingConfig signingConfigs.release
+        }
+
+        debug {
+            signingConfig signingConfigs.release
         }
     }
 }

@@ -2,6 +2,7 @@ package com.rincyan.smsdelete.utils;
 
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -34,11 +35,10 @@ public class SMSHandler {
     private String regex;
     private Context context;
     private SharedPreferences preferences;
-    private ProgressDialog progressDialog;
     private static final Uri SMS_URI = Uri.parse("content://sms/inbox");
     private static final String[] ALL_THREADS_PROJECTION = {
             "_id", "address", "person", "body",
-            "date", "type", "thread_id"};
+            "date", "type", "thread_id", "read"};
 
     public SMSHandler(Context context) {
         this.context = context;
@@ -68,7 +68,7 @@ public class SMSHandler {
                 String date = dateFormat.format(formatDate);
 
                 Cursor c = db.rawQuery("select * from whitelist where textid=" + String.valueOf(id), null);
-                while(c.moveToNext()){
+                while (c.moveToNext()) {
                     c.close();
                     whitelist = true;
                 }
@@ -124,5 +124,28 @@ public class SMSHandler {
 
     public void setRegex(String regex) {
         this.regex = regex;
+    }
+
+    public boolean readAll() {
+        Cursor cursor = context.getContentResolver().query(SMS_URI, null,
+                null, null, "date desc");
+        assert cursor != null;
+        try {
+            while (cursor.moveToNext()) {
+                int indexRead = cursor.getColumnIndex("read");
+                if (cursor.getInt(indexRead) != 1) {
+                    String SmsMessageId = cursor.getString(cursor.getColumnIndex("_id"));
+                    ContentValues values = new ContentValues();
+                    values.put("read", true);
+                    context.getContentResolver().update(SMS_URI, values, "_id=" + SmsMessageId, null);
+                }
+            }
+            cursor.close();
+            return true;
+        }catch (Exception e){
+            cursor.close();
+            return false;
+        }
+
     }
 }

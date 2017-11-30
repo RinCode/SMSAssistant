@@ -113,7 +113,7 @@ public class Clean extends Fragment {
                                     if (smsHandler.deleteSms(smsData.get(position).getId().toString()) == 1) {
                                         smsData.remove(position);
                                         db = getActivity().openOrCreateDatabase("smsdel.db", getActivity().MODE_PRIVATE, null);
-                                        if(smsData.get(position).getWhitelist()){
+                                        if (smsData.get(position).getWhitelist()) {
                                             db.execSQL("delete from whitelist where textid=" + String.valueOf(smsData.get(position).getId()));
                                         }
                                         db.close();
@@ -125,7 +125,7 @@ public class Clean extends Fragment {
                                     }
                                 }
                             })
-                            .setNeutralButton(smsData.get(position).getWhitelist()?R.string.remove_from_whitelist:R.string.add_to_whitelist, new DialogInterface.OnClickListener() {
+                            .setNeutralButton(smsData.get(position).getWhitelist() ? R.string.remove_from_whitelist : R.string.add_to_whitelist, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     db = getActivity().openOrCreateDatabase("smsdel.db", getActivity().MODE_PRIVATE, null);
@@ -187,7 +187,7 @@ public class Clean extends Fragment {
                                     int count = 0;
                                     SMSHandler smsHandler = new SMSHandler(context);
                                     for (SMS tmp : smsData) {
-                                        if(!tmp.getWhitelist()) {
+                                        if (!tmp.getWhitelist()) {
                                             flag = smsHandler.deleteSms(tmp.getId().toString());
                                             if (flag != 1) {
                                                 progressDialog.dismiss();
