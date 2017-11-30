@@ -1,13 +1,15 @@
 package com.rincyan.smsdelete.fragment;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.database.Cursor;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Looper;
+import android.provider.Telephony;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -24,7 +26,6 @@ import android.widget.Toast;
 import com.rincyan.smsdelete.R;
 import com.rincyan.smsdelete.recyclerview.RecyclerViewAdapter;
 import com.rincyan.smsdelete.recyclerview.SMS;
-import com.rincyan.smsdelete.utils.DefaultSMS;
 import com.rincyan.smsdelete.utils.GlobalControl;
 import com.rincyan.smsdelete.utils.SMSHandler;
 
@@ -45,7 +46,6 @@ public class Clean extends Fragment {
     private ProgressDialog progressDialog;
     private SwipeRefreshLayout swipeRefreshLayout;
     private SMSHandler smsHandler;
-    private DefaultSMS defaultSMS;//默认短信app
     private String method = "null";
     private Long start_time = null;
     private Long end_time = null;
@@ -53,6 +53,10 @@ public class Clean extends Fragment {
     private Bundle arg;
     private GlobalControl globalControl;
     private SQLiteDatabase db;
+    private int deleteWay;
+    private int clickPos;
+    private int tryTimes = 0;
+    private String defaultSmsApp;
 
 
     @Nullable
@@ -67,7 +71,6 @@ public class Clean extends Fragment {
         smsList.setAdapter(adapter);
         smsList.setLayoutManager(new LinearLayoutManager(context));
         smsHandler = new SMSHandler(context);
-        defaultSMS = new DefaultSMS(context);
         try {
             //如果从advanced_other界面调用
             arg = getArguments();
@@ -110,19 +113,9 @@ public class Clean extends Fragment {
 
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    if (smsHandler.deleteSms(smsData.get(position).getId().toString()) == 1) {
-                                        smsData.remove(position);
-                                        db = getActivity().openOrCreateDatabase("smsdel.db", getActivity().MODE_PRIVATE, null);
-                                        if (smsData.get(position).getWhitelist()) {
-                                            db.execSQL("delete from whitelist where textid=" + String.valueOf(smsData.get(position).getId()));
-                                        }
-                                        db.close();
-                                        adapter.notifyDataSetChanged();
-                                        Toast.makeText(context, R.string.delete_success, Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Toast.makeText(context, R.string.no_sms_try_again, Toast.LENGTH_SHORT).show();
-                                        defaultSMS.SetDefault();
-                                    }
+                                    deleteWay = 0;
+                                    clickPos = position;
+                                    singleDel(position);
                                 }
                             })
                             .setNeutralButton(smsData.get(position).getWhitelist() ? R.string.remove_from_whitelist : R.string.add_to_whitelist, new DialogInterface.OnClickListener() {
@@ -172,42 +165,8 @@ public class Clean extends Fragment {
 
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            progressDialog = new ProgressDialog(context);
-                            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                            progressDialog.setTitle(R.string.deleting);
-                            progressDialog.setMax(100);
-                            progressDialog.setProgress(0);
-                            progressDialog.setCancelable(false);
-                            progressDialog.show();
-                            new Thread() {
-                                @Override
-                                public void run() {
-                                    Looper.prepare();
-                                    int flag = 0;
-                                    int count = 0;
-                                    SMSHandler smsHandler = new SMSHandler(context);
-                                    for (SMS tmp : smsData) {
-                                        if (!tmp.getWhitelist()) {
-                                            flag = smsHandler.deleteSms(tmp.getId().toString());
-                                            if (flag != 1) {
-                                                progressDialog.dismiss();
-                                                Toast.makeText(context, R.string.fragment_clean_error, Toast.LENGTH_SHORT).show();
-                                                defaultSMS.SetDefault();
-                                                Looper.loop();
-                                                return;
-                                            }
-                                        }
-                                        count += 1;
-                                        progressDialog.setProgress((int) ((float) count / (float) smsData.size() * 100));
-                                    }
-                                    progressDialog.dismiss();
-                                    Toast.makeText(context, R.string.fragment_clean_success, Toast.LENGTH_SHORT).show();
-                                    defaultSMS.CancelDefault();
-                                    Update update = new Update();
-                                    update.execute();
-                                    Looper.loop();
-                                }
-                            }.start();
+                            deleteWay = 1;
+                            allDel();
                         }
                     })
                     .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -218,6 +177,69 @@ public class Clean extends Fragment {
                     }).show();
         } else {
             Toast.makeText(context, R.string.no_data_del, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void singleDel(int position) {
+        if(Objects.equals(Telephony.Sms.getDefaultSmsPackage(context), context.getPackageName())) {
+            if (smsHandler.deleteSms(smsData.get(position).getId().toString()) == 1) {
+                smsData.remove(position);
+                db = getActivity().openOrCreateDatabase("smsdel.db", getActivity().MODE_PRIVATE, null);
+                if (smsData.get(position).getWhitelist()) {
+                    db.execSQL("delete from whitelist where textid=" + String.valueOf(smsData.get(position).getId()));
+                }
+                db.close();
+                adapter.notifyDataSetChanged();
+                Toast.makeText(context, R.string.delete_success, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(context, R.string.no_sms_try_again, Toast.LENGTH_SHORT).show();
+            }
+            cancelDefault();
+        }else {
+            setDefault();
+        }
+    }
+
+    private void allDel() {
+        if(Objects.equals(Telephony.Sms.getDefaultSmsPackage(context), context.getPackageName())) {
+            progressDialog = new ProgressDialog(context);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressDialog.setTitle(R.string.deleting);
+            progressDialog.setMax(100);
+            progressDialog.setProgress(0);
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+            new Thread() {
+                @Override
+                public void run() {
+                    Looper.prepare();
+                    int flag = 0;
+                    int count = 0;
+                    SMSHandler smsHandler = new SMSHandler(context);
+                    for (SMS tmp : smsData) {
+                        if (!tmp.getWhitelist()) {
+                            flag = smsHandler.deleteSms(tmp.getId().toString());
+                            if (flag != 1) {
+                                progressDialog.dismiss();
+                                Toast.makeText(context, R.string.fragment_clean_error, Toast.LENGTH_SHORT).show();
+                                setDefault();
+                                Looper.loop();
+                                return;
+                            }
+                        }
+                        count += 1;
+                        progressDialog.setProgress((int) ((float) count / (float) smsData.size() * 100));
+                    }
+                    progressDialog.dismiss();
+                    Toast.makeText(context, R.string.fragment_clean_success, Toast.LENGTH_SHORT).show();
+                    Update update = new Update();
+                    update.execute();
+                    Looper.loop();
+                    cancelDefault();
+                }
+            }.start();
+        }else {
+            setDefault();
         }
     }
 
@@ -247,5 +269,41 @@ public class Clean extends Fragment {
 
     private boolean checkEmpty() {
         return smsData.size() == 0 || smsData.size() == 1 & smsData.get(0).getId() == -1;
+    }
+
+    private void setDefault() {
+        defaultSmsApp = Telephony.Sms.getDefaultSmsPackage(context);
+        Intent intent =
+                new Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT);
+        intent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME,
+                context.getPackageName());
+        startActivityForResult(intent, 0);
+    }
+
+    private void cancelDefault() {
+        Intent intent = new Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT);
+        intent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, defaultSmsApp);
+        context.startActivity(intent);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 0) {
+            if (tryTimes < 2) {
+                if (resultCode != Activity.RESULT_OK) {
+                    setDefault();
+                } else {
+                    if (deleteWay == 0) {
+                        singleDel(clickPos);
+                    } else {
+                        allDel();
+                    }
+                }
+                tryTimes++;
+            } else {
+                tryTimes = 0;
+            }
+        }
     }
 }

@@ -33,7 +33,6 @@ import com.rincyan.smsdelete.fragment.Advance;
 import com.rincyan.smsdelete.fragment.Clean;
 import com.rincyan.smsdelete.fragment.Hello;
 import com.rincyan.smsdelete.fragment.Recognize;
-import com.rincyan.smsdelete.utils.DefaultSMS;
 import com.rincyan.smsdelete.utils.GlobalControl;
 
 import java.util.Locale;
@@ -124,11 +123,6 @@ public class MainActivity extends AppCompatActivity
                 globalControl.set_fragment_name(getResources().getString(R.string.fragment_regex_mode));
             }
             if (fragmentManager.getBackStackEntryCount() == 1) {
-                //退出前检查是否已还原默认短信应用
-                DefaultSMS defaultSMS = new DefaultSMS(this);
-                if (defaultSMS.isDefault()) {
-                    defaultSMS.CancelDefault();
-                }
                 hello = new Hello();
                 fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.content, hello).commit();
                 moveTaskToBack(false);
@@ -148,10 +142,6 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
-            DefaultSMS defaultSMS = new DefaultSMS(this);
-            if (defaultSMS.isDefault()) {
-                defaultSMS.CancelDefault();
-            }
             globalControl.stopListen();
             finish();
             return true;

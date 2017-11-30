@@ -1,9 +1,13 @@
 package com.rincyan.smsdelete.fragment;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Looper;
+import android.provider.Telephony;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,11 +20,11 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.rincyan.smsdelete.R;
-import com.rincyan.smsdelete.utils.DefaultSMS;
 import com.rincyan.smsdelete.utils.GlobalControl;
 import com.rincyan.smsdelete.utils.SMSHandler;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Created by rin on 2017/08/01.
@@ -39,7 +43,9 @@ public class Advance extends Fragment {
     private GlobalControl globalControl;
     private SMSHandler smsHandler;
     private ProgressDialog progressDialog;
-    private DefaultSMS defaultSMS;
+    private String defaultSmsApp;
+    private Context context;
+    private int tryTimes;
 
     @Nullable
     @Override
@@ -57,8 +63,8 @@ public class Advance extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         final GlobalControl globalControl = (GlobalControl) getActivity().getApplicationContext();
+        context = getActivity();
         smsHandler = new SMSHandler(getActivity());
-        defaultSMS = new DefaultSMS(getActivity());
         methodData = new ArrayList<String>();
         adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, getMethod());
         advance_method.setAdapter(adapter);
@@ -79,26 +85,7 @@ public class Advance extends Fragment {
                         fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.content, advance_other).commit();
                         break;
                     case 2:
-                        if(defaultSMS.isDefault()) {
-                            progressDialog = new ProgressDialog(getActivity());
-                            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                            progressDialog.setTitle("处理中");
-                            progressDialog.setCancelable(false);
-                            progressDialog.show();
-                            new Thread() {
-                                @Override
-                                public void run() {
-                                    Looper.prepare();
-                                    ReadAll readAll = new ReadAll();
-                                    readAll.execute();
-                                    Looper.loop();
-                                }
-
-                            }.start();
-                        }else {
-                            Toast.makeText(getActivity(),"请设置为默认短信应用",Toast.LENGTH_SHORT).show();
-                            defaultSMS.SetDefault();
-                        }
+                        setRead();
                         break;
                     default:
                         break;
@@ -107,12 +94,34 @@ public class Advance extends Fragment {
         });
         super.onActivityCreated(savedInstanceState);
     }
+
+    private void setRead(){
+        if(Objects.equals(Telephony.Sms.getDefaultSmsPackage(context), context.getPackageName())) {
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setTitle(R.string.processing);
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+            new Thread() {
+                @Override
+                public void run() {
+                    Looper.prepare();
+                    ReadAll readAll = new ReadAll();
+                    readAll.execute();
+                    Looper.loop();
+                }
+
+            }.start();
+        }else {
+            setDefault();
+        }
+    }
     
     private ArrayList<String> getMethod(){
         methodData.clear();
         methodData.add(getResources().getString(R.string.fragment_regex_mode));
         methodData.add(getResources().getString(R.string.fragment_other_mode));
-        methodData.add("标记所有短信已读");
+        methodData.add(getResources().getString(R.string.fragment_advance_markread));
         return methodData;
     }
 
@@ -126,12 +135,44 @@ public class Advance extends Fragment {
         @Override
         protected void onPostExecute(Object o) {
             if ((boolean) o){
-                Toast.makeText(getActivity(),"成功",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),R.string.succeed,Toast.LENGTH_SHORT).show();
             }else {
-                Toast.makeText(getActivity(),"出现错误",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),R.string.failed,Toast.LENGTH_SHORT).show();
             }
             progressDialog.dismiss();
-            defaultSMS.CancelDefault();
+            cancelDefault();
+        }
+    }
+
+    private void setDefault() {
+        defaultSmsApp = Telephony.Sms.getDefaultSmsPackage(context);
+        Intent intent =
+                new Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT);
+        intent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME,
+                context.getPackageName());
+        startActivityForResult(intent, 0);
+    }
+
+    private void cancelDefault() {
+        Intent intent = new Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT);
+        intent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, defaultSmsApp);
+        context.startActivity(intent);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 0) {
+            if (tryTimes < 2) {
+                if (resultCode != Activity.RESULT_OK) {
+                    setDefault();
+                } else {
+                    setRead();
+                }
+                tryTimes++;
+            } else {
+                tryTimes = 0;
+            }
         }
     }
 }

@@ -3,7 +3,7 @@
     <!--ui-->
 
     <string name="app_name">短信助手</string>
-    <string name="simple_version">v2.6.01_beta</string>
+    <string name="simple_version">v2.6.02_beta</string>
 
     <string name="usage">
         • 本软件的正常工作需要授予短信读/写权限，并会申请临时变更此软件为默认短信应用。\n
@@ -59,7 +59,7 @@
 
     <string name="about_writer">作者：</string>
     <string name="about_github">https://github.com/RinCode</string>
-    <string name="about_version">短信助手(原验证码删除器)v2.6.01_beta</string>
+    <string name="about_version">短信助手(原验证码删除器)v2.6.02_beta</string>
     <string name="about_translate_by">由谷歌提供翻译支持。</string>
 
     <!--end_ui-->
@@ -71,6 +71,7 @@
 
 
     <string name="fragment_advance">高级选项</string>
+    <string name="fragment_advance_markread">标记所有短信已读</string>
 
     <string name="fragment_regex_mode">正则表达式模式</string>
     <string name="fragment_regex_no_exist_regex">没有规则，请点击右下角添加</string>
@@ -115,6 +116,9 @@
     <string name="no_data_del">"没有数据可以删除"</string>
     <string name="start_listening">开始监听</string>
     <string name="stop_listening">停止监听</string>
+    <string name="processing">处理中</string>
+    <string name="succeed">成功</string>
+    <string name="failed">失败</string>
 
 
     <string name="tos">使用协议及说明</string>

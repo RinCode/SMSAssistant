@@ -3,7 +3,7 @@
     <!--ui-->
 
     <string name="app_name">SMS Assistant</string>
-    <string name="simple_version">v2.6.01_beta</string>
+    <string name="simple_version">v2.6.02_beta</string>
 
     <string name="usage">
         • This app needs SMS Write/Read Permission to work, and will change your default sms app temporarily.\n
@@ -60,7 +60,7 @@
 
     <string name="about_writer">Writer:</string>
     <string name="about_github">https://github.com/RinCode</string>
-    <string name="about_version">SMS Assistant(SMS Deleter) v2.6.01_beta</string>
+    <string name="about_version">SMS Assistant(SMS Deleter) v2.6.02_beta</string>
     <string name="about_translate_by">Translated By Google.</string>
 
     <!--end_ui-->
@@ -72,6 +72,7 @@
 
 
     <string name="fragment_advance">Advanced</string>
+    <string name="fragment_advance_markread">mark all SMS read</string>
 
     <string name="fragment_regex_mode">RegEx Mode</string>
     <string name="fragment_regex_no_exist_regex">There are no rules, please click the lower right button to add.</string>
@@ -115,6 +116,9 @@
     <string name="no_data_del">No data to delete</string>
     <string name="start_listening">SMS Listening Started</string>
     <string name="stop_listening">SMS Listening Stopped</string>
+    <string name="processing">Processing</string>
+    <string name="succeed">succeed</string>
+    <string name="failed">failed</string>
 
     <string name="tos">Attention</string>
     <string name="no_sms_permission">NO SMS </string>
